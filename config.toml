@@ -2,9 +2,11 @@
 baseurl = ""
 languageCode = "en"
 
-title = "Title"
+title = "Walker2"
 theme = "hyde-hyde"
 relativeurls = true
+
+# ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 ## Hugo Built-in Features
 # disqusShortname = "your-disqus-shortname"
@@ -17,10 +19,10 @@ relativeurls = true
 
 ## Site Settings
 [params]
-    author = "Author"
-    title = "Title"
+    author = "Walker"
+    title = "Walker Harrison"
     # description = "..."
-    authorimage = "/img/hugo.png"
+    authorimage = "/img/headshot.jpg"
     dateformat = "Jan 2, 2006"
 
     # sidebar, copyright & license
