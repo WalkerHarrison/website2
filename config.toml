@@ -23,6 +23,7 @@ theme = "hyde-hyde"
     authorimage = "/img/headshot.jpg"
     dateformat = "Jan 2, 2006"
     themeColor = "theme-base-0d"
+    custom_css = ["css/mystyles.css"]
 
     # sidebar, copyright & license
     copyright = "htr3n"
@@ -47,12 +48,12 @@ theme = "hyde-hyde"
 [params.social]
     github = "<username>"
     instagram = "<username>"
-    xing = "<username>"
+    # xing = "<username>"
     linkedin = "<username>"
     twitter = "<username>"
     facebook = "<username>"
-    stackoverflow = "<username>"
-    telegram = "<username>"
+    # stackoverflow = "<username>"
+    # telegram = "<username>"
     email = "your-email@example.com"
     # gravatar = "your-email@example.com"
 
