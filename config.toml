@@ -3,7 +3,7 @@ baseurl = "/"
 languageCode = "en"
 relativeurls = true
 
-title = "Title"
+title = "Walker Harrison"
 theme = "hyde-hyde"
 
 ## Hugo Built-in Features
@@ -20,8 +20,9 @@ theme = "hyde-hyde"
     author = "Author"
     title = "Title"
     # description = "..."
-    authorimage = "/img/hugo.png"
+    authorimage = "/img/headshot.jpg"
     dateformat = "Jan 2, 2006"
+    themeColor = "theme-base-0d"
 
     # sidebar, copyright & license
     copyright = "htr3n"
