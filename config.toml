@@ -1,5 +1,5 @@
 ## Basic Configuration
-baseurl = "https://walker-harrison.com/"
+baseurl = "/"
 languageCode = "en"
 relativeurls = true
 
@@ -27,7 +27,7 @@ theme = "hyde-hyde"
     copyright = "htr3n"
     license = "CC BY-SA 4.0"
     licenseURL = "https://creativecommons.org/licenses/by-sa/4.0"
-    showBuiltWith = true
+    showBuiltWith = false
 
     # https://highlightjs.org
     highlightjs = true

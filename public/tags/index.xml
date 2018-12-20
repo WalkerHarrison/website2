@@ -2,138 +2,138 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Title</title>
-    <link>https://walker-harrison.com/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on Title</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sun, 28 Sep 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://walker-harrison.com/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Css</title>
-      <link>https://walker-harrison.com/tags/css/</link>
+      <link>/tags/css/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://walker-harrison.com/tags/css/</guid>
+      <guid>/tags/css/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Development</title>
-      <link>https://walker-harrison.com/tags/development/</link>
+      <link>/tags/development/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://walker-harrison.com/tags/development/</guid>
+      <guid>/tags/development/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go</title>
-      <link>https://walker-harrison.com/tags/go/</link>
+      <link>/tags/go/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://walker-harrison.com/tags/go/</guid>
+      <guid>/tags/go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Golang</title>
-      <link>https://walker-harrison.com/tags/golang/</link>
+      <link>/tags/golang/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://walker-harrison.com/tags/golang/</guid>
+      <guid>/tags/golang/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Html</title>
-      <link>https://walker-harrison.com/tags/html/</link>
+      <link>/tags/html/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://walker-harrison.com/tags/html/</guid>
+      <guid>/tags/html/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hugo</title>
-      <link>https://walker-harrison.com/tags/hugo/</link>
+      <link>/tags/hugo/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://walker-harrison.com/tags/hugo/</guid>
+      <guid>/tags/hugo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Jekyll</title>
-      <link>https://walker-harrison.com/tags/jekyll/</link>
+      <link>/tags/jekyll/</link>
       <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://walker-harrison.com/tags/jekyll/</guid>
+      <guid>/tags/jekyll/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Migration</title>
-      <link>https://walker-harrison.com/tags/migration/</link>
+      <link>/tags/migration/</link>
       <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://walker-harrison.com/tags/migration/</guid>
+      <guid>/tags/migration/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Plot</title>
-      <link>https://walker-harrison.com/tags/plot/</link>
+      <link>/tags/plot/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
       
-      <guid>https://walker-harrison.com/tags/plot/</guid>
+      <guid>/tags/plot/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R Markdown</title>
-      <link>https://walker-harrison.com/tags/r-markdown/</link>
+      <link>/tags/r-markdown/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
       
-      <guid>https://walker-harrison.com/tags/r-markdown/</guid>
+      <guid>/tags/r-markdown/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Regression</title>
-      <link>https://walker-harrison.com/tags/regression/</link>
+      <link>/tags/regression/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
       
-      <guid>https://walker-harrison.com/tags/regression/</guid>
+      <guid>/tags/regression/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Templates</title>
-      <link>https://walker-harrison.com/tags/templates/</link>
+      <link>/tags/templates/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://walker-harrison.com/tags/templates/</guid>
+      <guid>/tags/templates/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Theme</title>
-      <link>https://walker-harrison.com/tags/theme/</link>
+      <link>/tags/theme/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://walker-harrison.com/tags/theme/</guid>
+      <guid>/tags/theme/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Themes</title>
-      <link>https://walker-harrison.com/tags/themes/</link>
+      <link>/tags/themes/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://walker-harrison.com/tags/themes/</guid>
+      <guid>/tags/themes/</guid>
       <description></description>
     </item>
     
