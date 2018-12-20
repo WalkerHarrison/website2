@@ -1,6 +1,25 @@
-<span class="section__title">{{ .Title }}</span>
+<span class="section__title">advanced baseball metrics from scratch</span>
 <ul class="posts">
-    {{ with .Data.Pages }}
+    {{ with where .Site.Pages "Params.weight" 1 }}
         {{ partial "posts-list.html" . }}
     {{ end }}
 </ul>
+<span class="section__title">reimplementing baseball papers</span>
+<ul class="posts">
+    {{ with where .Site.Pages "Params.weight" 2 }}
+        {{ partial "posts-list.html" . }}
+    {{ end }}
+</ul>
+<span class="section__title">explorations with personal data</span>
+<ul class="posts">
+    {{ with where .Site.Pages "Params.weight" 3 }}
+        {{ partial "posts-list.html" . }}
+    {{ end }}
+</ul>
+<span class="section__title">random thoughts</span>
+<ul class="posts">
+    {{ with where .Site.Pages "Params.weight" 4 }}
+        {{ partial "posts-list.html" . }}
+    {{ end }}
+</ul>
+
