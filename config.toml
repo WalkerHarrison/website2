@@ -1,8 +1,8 @@
 ## Basic Configuration
-baseurl = ""
+baseurl = "/"
 languageCode = "en"
 
-title = "Walker2"
+title = "Walker Harrison"
 theme = "hyde-hyde"
 relativeurls = true
 
@@ -24,6 +24,8 @@ relativeurls = true
     # description = "..."
     authorimage = "/img/headshot.jpg"
     dateformat = "Jan 2, 2006"
+    
+    themeColor = "theme-base-0d"
 
     # sidebar, copyright & license
     copyright = "htr3n"
