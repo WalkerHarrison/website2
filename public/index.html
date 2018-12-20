@@ -97,24 +97,32 @@
 		 
 			 
 				<li>
-					<a href="./posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="./portfolio/">
-						<span>Portfolio</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
 					<a href="./about/">
 						<span>About</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="./posts/">
+						<span>Blog</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="./consulting/">
+						<span>Consulting</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="./resume/">
+						<span>Resume</span>
 					</a>
 				</li>
 			 
@@ -230,9 +238,7 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
         </span>
         <span >
         
-        R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.
+        library(tidyverse) library(gridExtra) setwd(&#39;/Users/walkerharrison/Downloads/chadwick-0.6.5&#39;) get_plays &lt;- function(season){ season.path &lt;- paste0(&#39;download.folder/unzipped/all&#39;, season, &#39;.csv&#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &lt;- read_csv(season.path) fields &lt;- read_csv(&#39;download.folder/unzipped/fields.csv&#39;) names(plays) &lt;- fields %&gt;% pull(Header) return(plays) } plays2017.raw &lt;- get_plays(2017) add_columns &lt;- function(plays.raw){ event_key &lt;- read_csv(&#39;download.folder/unzipped/event_key.csv&#39;) event_key$RESULT[event_key$EVENT_CD == 19] &lt;- &quot;Fielder&#39;s Choice&quot; plays.raw &lt;- plays.raw %&gt;% inner_join(event_key, by = &quot;EVENT_CD&quot;) %&gt;% mutate(RESULT = as.factor(RESULT)) plays &lt;- plays.raw %&gt;% rowwise() %&gt;% mutate(runs.play = sum(BAT_DEST_ID &gt; 3, RUN1_DEST_ID &gt; 3, RUN2_DEST_ID &gt; 3, RUN3_DEST_ID &gt; 3, na.
         
         </span>
         
@@ -246,30 +252,7 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       
       <div class="post-list__item">
         <span class="item__title--big">
-          <a href="./posts/migrate-from-jekyll/" >Migrate to Hugo from Jekyll</a>
-        </span>
-        <span class="item__date">
-          Mar 10, 2014
-        </span>
-        <span >
-        
-        Move static content to static Jekyll has a rule that any directory not starting with _ will be copied as-is to the _site output. Hugo keeps all static content under static. You should therefore move it all there. With Jekyll, something that looked like
-▾ &lt;root&gt;/ ▾ images/ logo.png  should become
-▾ &lt;root&gt;/ ▾ static/ ▾ images/ logo.png  Additionally, you&rsquo;ll want any files that should reside at the root (such as CNAME) to be moved to static.
-        
-        </span>
-        
-          ... <a class="read-more-symbol" href="./posts/migrate-from-jekyll/">➦</a>
-        
-        </div>
-        
-     
-      
-        
-      
-      <div class="post-list__item">
-        <span class="item__title--big">
-          <a href="./posts/2015-07-23-r-rmarkdown/" >Hello R Markdown</a>
+          <a href="./posts/nono5/" >mining the GroupMe text</a>
         </span>
         <span class="item__date">
           Jul 23, 2015
@@ -282,7 +265,7 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
         
         </span>
         
-          ... <a class="read-more-symbol" href="./posts/2015-07-23-r-rmarkdown/">➦</a>
+          ... <a class="read-more-symbol" href="./posts/nono5/">➦</a>
         
         </div>
         
@@ -315,19 +298,20 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       
       <div class="post-list__item">
         <span class="item__title--big">
-          <a href="./posts/creating-a-new-theme/" >Creating a New Theme</a>
+          <a href="./posts/nono7/" >how to park more cars</a>
         </span>
         <span class="item__date">
-          Sep 28, 2014
+          Jul 23, 2015
         </span>
         <span >
         
-        Introduction This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&rsquo;t cover using CSS to style your theme.
-We&rsquo;ll start with creating a new site with a very basic template.
+        R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+You can embed an R code chunk like this:
+summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.
         
         </span>
         
-          ... <a class="read-more-symbol" href="./posts/creating-a-new-theme/">➦</a>
+          ... <a class="read-more-symbol" href="./posts/nono7/">➦</a>
         
         </div>
         
@@ -337,19 +321,20 @@ We&rsquo;ll start with creating a new site with a very basic template.
       
       <div class="post-list__item">
         <span class="item__title--big">
-          <a href="./posts/goisforlovers/" >(Hu)go Template Primer</a>
+          <a href="./posts/nono8/" >how to wait for the subway</a>
         </span>
         <span class="item__date">
-          Apr 2, 2014
+          Jul 23, 2015
         </span>
         <span >
         
-        Hugo uses the excellent go html/template library for its template engine. It is an extremely lightweight engine that provides a very small amount of logic. In our experience that it is just the right amount of logic to be able to create a good static website. If you have used other template systems from different languages or frameworks you will find a lot of similarities in go templates.
-This document is a brief primer on using go templates.
+        R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+You can embed an R code chunk like this:
+summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.
         
         </span>
         
-          ... <a class="read-more-symbol" href="./posts/goisforlovers/">➦</a>
+          ... <a class="read-more-symbol" href="./posts/nono8/">➦</a>
         
         </div>
         
@@ -359,23 +344,20 @@ This document is a brief primer on using go templates.
       
       <div class="post-list__item">
         <span class="item__title--big">
-          <a href="./posts/hugoisforlovers/" >Getting Started with Hugo</a>
+          <a href="./posts/nono6/" >how to walk faster</a>
         </span>
         <span class="item__date">
-          Apr 2, 2014
+          Jul 23, 2015
         </span>
         <span >
         
-        Step 1. Install Hugo Goto hugo releases and download the appropriate version for your os and architecture.
-Save it somewhere specific as we will be using it in the next step.
-More complete instructions are available at installing hugo
-Step 2. Build the Docs Hugo has its own example site which happens to also be the documentation site you are reading right now.
-Follow the following steps:
- Clone the hugo repository Go into the repo Run hugo in server mode and build the docs Open your browser to http://localhost:1313  Corresponding pseudo commands:
+        R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+You can embed an R code chunk like this:
+summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.
         
         </span>
         
-          ... <a class="read-more-symbol" href="./posts/hugoisforlovers/">➦</a>
+          ... <a class="read-more-symbol" href="./posts/nono6/">➦</a>
         
         </div>
         

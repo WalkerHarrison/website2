@@ -22,14 +22,10 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="wOBA and wRC&#43;"/>
-<meta name="twitter:description" content="R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu."/>
+<meta name="twitter:description" content="library(tidyverse) library(gridExtra) setwd(&#39;/Users/walkerharrison/Downloads/chadwick-0.6.5&#39;) get_plays &lt;- function(season){ season.path &lt;- paste0(&#39;download.folder/unzipped/all&#39;, season, &#39;.csv&#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &lt;- read_csv(season.path) fields &lt;- read_csv(&#39;download.folder/unzipped/fields.csv&#39;) names(plays) &lt;- fields %&gt;% pull(Header) return(plays) } plays2017.raw &lt;- get_plays(2017) add_columns &lt;- function(plays.raw){ event_key &lt;- read_csv(&#39;download.folder/unzipped/event_key.csv&#39;) event_key$RESULT[event_key$EVENT_CD == 19] &lt;- &quot;Fielder&#39;s Choice&quot; plays.raw &lt;- plays.raw %&gt;% inner_join(event_key, by = &quot;EVENT_CD&quot;) %&gt;% mutate(RESULT = as.factor(RESULT)) plays &lt;- plays.raw %&gt;% rowwise() %&gt;% mutate(runs.play = sum(BAT_DEST_ID &gt; 3, RUN1_DEST_ID &gt; 3, RUN2_DEST_ID &gt; 3, RUN3_DEST_ID &gt; 3, na."/>
 
 <meta property="og:title" content="wOBA and wRC&#43;" />
-<meta property="og:description" content="R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu." />
+<meta property="og:description" content="library(tidyverse) library(gridExtra) setwd(&#39;/Users/walkerharrison/Downloads/chadwick-0.6.5&#39;) get_plays &lt;- function(season){ season.path &lt;- paste0(&#39;download.folder/unzipped/all&#39;, season, &#39;.csv&#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &lt;- read_csv(season.path) fields &lt;- read_csv(&#39;download.folder/unzipped/fields.csv&#39;) names(plays) &lt;- fields %&gt;% pull(Header) return(plays) } plays2017.raw &lt;- get_plays(2017) add_columns &lt;- function(plays.raw){ event_key &lt;- read_csv(&#39;download.folder/unzipped/event_key.csv&#39;) event_key$RESULT[event_key$EVENT_CD == 19] &lt;- &quot;Fielder&#39;s Choice&quot; plays.raw &lt;- plays.raw %&gt;% inner_join(event_key, by = &quot;EVENT_CD&quot;) %&gt;% mutate(RESULT = as.factor(RESULT)) plays &lt;- plays.raw %&gt;% rowwise() %&gt;% mutate(runs.play = sum(BAT_DEST_ID &gt; 3, RUN1_DEST_ID &gt; 3, RUN2_DEST_ID &gt; 3, RUN3_DEST_ID &gt; 3, na." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/nono/" /><meta property="article:published_time" content="2015-07-23T21:13:14-05:00"/>
 <meta property="article:modified_time" content="2015-07-23T21:13:14-05:00"/><meta property="og:site_name" content="Title" />
@@ -102,24 +98,32 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
 		 
 			 
 				<li>
-					<a href="../../posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="../../portfolio/">
-						<span>Portfolio</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
 					<a href="../../about/">
 						<span>About</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="../../posts/">
+						<span>Blog</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="../../consulting/">
+						<span>Consulting</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="../../resume/">
+						<span>Resume</span>
 					</a>
 				</li>
 			 
@@ -215,7 +219,7 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
     
     
     <br/>
-    <i class="fas fa-clock"></i> 1 min read
+    <i class="fas fa-clock"></i> 5 min read
 </div>
 
 
@@ -226,54 +230,287 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
     
 
 
-<div id="r-markdown" class="section level1">
-<h1>R Markdown</h1>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-fit &lt;- lm(dist ~ speed, data = cars)
-fit
-## 
-## Call:
-## lm(formula = dist ~ speed, data = cars)
-## 
-## Coefficients:
-## (Intercept)        speed  
-##     -17.579        3.932</code></pre>
-</div>
-<div id="including-plots" class="section level1">
-<h1>Including Plots</h1>
-<p>You can also embed plots. See Figure <a href="#fig:pie">1</a> for example:</p>
-<pre class="r"><code>par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c(&#39;Sky&#39;, &#39;Sunny side of pyramid&#39;, &#39;Shady side of pyramid&#39;),
-  col = c(&#39;#0292D8&#39;, &#39;#F7EA39&#39;, &#39;#C4B632&#39;),
-  init.angle = -50, border = NA
-)</code></pre>
-<div class="figure"><span id="fig:pie"></span>
-<img src="../../posts/nono_files/figure-html/pie-1.png" alt="A fancy pie chart." width="672" />
-<p class="caption">
-Figure 1: A fancy pie chart.
-</p>
-</div>
-</div>
+<pre class="r"><code>library(tidyverse)
+library(gridExtra)
+
+setwd(&#39;/Users/walkerharrison/Downloads/chadwick-0.6.5&#39;)
+
+get_plays &lt;- function(season){
+
+  season.path &lt;- paste0(&#39;download.folder/unzipped/all&#39;, season, &#39;.csv&#39;)
+  if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)}
+  
+  plays &lt;- read_csv(season.path)
+  fields &lt;- read_csv(&#39;download.folder/unzipped/fields.csv&#39;)
+  names(plays) &lt;- fields %&gt;% pull(Header)
+  
+  return(plays)
+}
+
+plays2017.raw &lt;- get_plays(2017)
+
+add_columns &lt;- function(plays.raw){
+  
+  event_key &lt;- read_csv(&#39;download.folder/unzipped/event_key.csv&#39;)
+  event_key$RESULT[event_key$EVENT_CD == 19] &lt;- &quot;Fielder&#39;s Choice&quot;
+  plays.raw &lt;- plays.raw %&gt;% inner_join(event_key, by = &quot;EVENT_CD&quot;) %&gt;%
+    mutate(RESULT = as.factor(RESULT))
+  
+  plays &lt;- plays.raw %&gt;% 
+    rowwise() %&gt;%
+    mutate(runs.play = sum(BAT_DEST_ID &gt; 3,
+                           RUN1_DEST_ID &gt; 3,
+                           RUN2_DEST_ID &gt; 3,
+                           RUN3_DEST_ID &gt; 3,
+                           na.rm = TRUE)) %&gt;%
+    mutate(on.first = ifelse(is.na(BASE1_RUN_ID), &#39;_&#39;, &#39;1B&#39;),
+           on.second = ifelse(is.na(BASE2_RUN_ID), &#39;_&#39;, &#39;2B&#39;),
+           on.third = ifelse(is.na(BASE3_RUN_ID), &#39;_&#39;, &#39;3B&#39;)) %&gt;%
+    mutate(base = paste(on.first, on.second, on.third),
+           out = OUTS_CT) %&gt;%
+    mutate(base_out = paste(base, out)) %&gt;%
+    group_by(GAME_ID, INN_CT, BAT_HOME_ID) %&gt;%
+    mutate(base_out_end = lead(base_out, default = &quot;END&quot;),
+           HOME_TEAM_ID = substr(GAME_ID, 1, 3)) %&gt;%
+    select(GAME_ID, HOME_TEAM_ID, AWAY_TEAM_ID, INN_CT, BAT_HOME_ID, 
+           OUTS_CT, AWAY_SCORE_CT, HOME_SCORE_CT, BAT_ID, PIT_ID, 
+           EVENT_CD, AB_FL, H_FL, SH_FL, SF_FL, RESULT, 
+           runs.play, base_out, base_out_end)
+  
+  return(plays)
+}
+
+plays2017 &lt;- add_columns(plays2017.raw)
+
+make_RE_matrix &lt;- function(plays){
+  inning.runs &lt;&lt;- plays %&gt;%
+    group_by(GAME_ID, INN_CT, BAT_HOME_ID) %&gt;%
+    summarize(runs.inning = sum(runs.play)) %&gt;% 
+    arrange(GAME_ID, BAT_HOME_ID, INN_CT) %&gt;%
+    group_by(GAME_ID, BAT_HOME_ID) %&gt;%
+    mutate(runs.cum = cumsum(runs.inning))
+  
+  runs.league &lt;&lt;- inning.runs %&gt;%
+    group_by(GAME_ID, BAT_HOME_ID) %&gt;%
+    summarize(runs = max(runs.cum)) %&gt;%
+    ungroup() %&gt;%
+    summarize(runs = sum(runs)) %&gt;%
+    pull(runs)
+  
+  RE.matrix &lt;- plays  %&gt;%
+    inner_join(inning.runs, by = c(&#39;GAME_ID&#39;, &#39;INN_CT&#39;, &#39;BAT_HOME_ID&#39;)) %&gt;%
+    mutate(runs.current = ifelse(BAT_HOME_ID == 1, HOME_SCORE_CT, AWAY_SCORE_CT)) %&gt;%
+    mutate(runs.left = runs.cum - runs.current) %&gt;%
+    group_by(base_out) %&gt;% summarize(runs.expected = mean(runs.left)) %&gt;%
+    rbind(data.frame(base_out = &quot;END&quot;, runs.expected = 0))
+  
+  return(list(&quot;matrix&quot; = RE.matrix, &quot;runs&quot; = runs.league))
+}
+
+RE.matrix2017 &lt;- make_RE_matrix(plays2017)
+
+get_run_values &lt;- function(plays, RE.matrix){
+  
+  matrix &lt;- RE.matrix$matrix
+  runs &lt;- RE.matrix$runs
+  
+  run.values &lt;- plays %&gt;%
+    inner_join(matrix, by = &quot;base_out&quot;) %&gt;%
+    inner_join(matrix, by = c(&quot;base_out_end&quot; = &quot;base_out&quot;)) %&gt;%
+    rename(runs.expected = runs.expected.x,
+           runs.expected.end = runs.expected.y) %&gt;%
+    group_by(RESULT) %&gt;%
+    summarize(n = n(),
+              run.value = mean(runs.play + runs.expected.end - runs.expected)) 
+  
+  out.value &lt;- run.values %&gt;% 
+    filter(RESULT %in% c(&quot;Generic out&quot;, &quot;Strikeout&quot;, &quot;Fielder&#39;s Choice&quot;)) %&gt;%
+    summarize(run.value = weighted.mean(run.value, w = n)) %&gt;%
+    pull(run.value)
+  
+  run.values &lt;- run.values %&gt;%
+    mutate(run.value.over.out = run.value - out.value)
+  
+  PA.league &lt;- sum(plays$AB_FL) + sum(plays$SH_FL) + sum(plays$SF_FL) +
+              sum(plays$RESULT %in% c(&quot;Walk&quot;, &quot;Intentional walk&quot;, &quot;Hit by pitch&quot;, &quot;Interference&quot;))
+  
+  runs.per.PA &lt;- runs/PA.league
+  
+  wOBA.league &lt;- (sum(plays$H_FL &gt; 0) + sum(plays$RESULT %in% c(&quot;Walk&quot;, &quot;Hit by pitch&quot;)))/
+               (sum(plays$AB_FL) + sum(plays$SF_FL) + sum(plays$RESULT %in% c(&quot;Walk&quot;, &quot;Hit by pitch&quot;)))
+  
+  wOBA.raw &lt;- run.values %&gt;%
+    filter(RESULT %in% c(&quot;Home run&quot;, &quot;Triple&quot;, &quot;Double&quot;, &quot;Single&quot;, &quot;Hit by pitch&quot;, &quot;Walk&quot;, &quot;Intentional walk&quot;)) %&gt;%
+    summarize(run.value.over.out = sum(run.value.over.out*n)) %&gt;%
+    pull(run.value.over.out)/PA.league
+  
+  wOBA.scale &lt;- wOBA.league/wOBA.raw
+  
+  run.values &lt;- run.values %&gt;% 
+    mutate(weight = run.value.over.out*wOBA.scale)
+  
+  return(list(&quot;RV&quot; = run.values, &quot;wOBA.league&quot; = wOBA.league, &quot;wOBA.scale&quot; = wOBA.scale, &quot;RpPA&quot; = runs.per.PA))
+}
+
+run.values.2017 &lt;- get_run_values(plays2017, RE.matrix2017)
+
+get_wOBA &lt;- function(player, plays, run.values){
+  
+  plays.player &lt;- plays %&gt;% ungroup() %&gt;%
+    filter(BAT_ID == player)
+  
+  player.events &lt;- plays.player %&gt;% count(RESULT) %&gt;% complete(RESULT, fill = list(n=0))
+  
+  NIBB &lt;- player.events %&gt;% filter(RESULT == &quot;Walk&quot;) %&gt;% pull(n)
+  IBB &lt;- player.events %&gt;% filter(RESULT == &quot;Intentional walk&quot;) %&gt;% pull(n)
+  HBP &lt;- player.events %&gt;% filter(RESULT == &quot;Hit by pitch&quot;) %&gt;% pull(n)
+  B1 &lt;- player.events %&gt;% filter(RESULT == &quot;Single&quot;) %&gt;% pull(n)
+  B2 &lt;- player.events %&gt;% filter(RESULT == &quot;Double&quot;) %&gt;% pull(n)
+  B3 &lt;- player.events %&gt;% filter(RESULT == &quot;Triple&quot;) %&gt;% pull(n)
+  HR &lt;- player.events %&gt;% filter(RESULT == &quot;Home run&quot;) %&gt;% pull(n)
+  SF &lt;- sum(plays.player$SF_FL)
+  AB &lt;- sum(plays.player$AB_FL)
+  PA &lt;- sum(plays.player$AB_FL) + sum(plays.player$SH_FL) + sum(plays.player$SF_FL) +
+    sum(plays.player$RESULT %in% c(&quot;Walk&quot;, &quot;Intentional walk&quot;, &quot;Hit by pitch&quot;, &quot;Interference&quot;))
+  
+  RV &lt;- run.values$RV
+  
+  wB1 &lt;- RV %&gt;% filter(RESULT == &quot;Single&quot;) %&gt;% pull(weight)
+  wB2 &lt;- RV %&gt;% filter(RESULT == &quot;Double&quot;) %&gt;% pull(weight)
+  wB3 &lt;- RV %&gt;% filter(RESULT == &quot;Triple&quot;) %&gt;% pull(weight)
+  wHR &lt;- RV %&gt;% filter(RESULT == &quot;Home run&quot;) %&gt;% pull(weight)
+  wBB &lt;- RV %&gt;% filter(RESULT == &quot;Walk&quot;) %&gt;% pull(weight)
+  wHBP &lt;- RV %&gt;% filter(RESULT == &quot;Hit by pitch&quot;) %&gt;% pull(weight)
+  
+  wOBA &lt;- (wBB*(NIBB) + wHBP*HBP + wB1*B1 + wB2*B2 + wB3*B3 + wHR*HR)/
+          (AB + NIBB + SF + HBP)
+  
+  return(c(&#39;PA&#39; = PA, &#39;wOBA&#39; = round(wOBA, 3)))
+}
+
+get_league_wOBAs &lt;- function(plays, run.values,
+                             AL = c(&#39;BAL&#39;, &#39;BOS&#39;, &#39;CHA&#39;, &#39;CLE&#39;, &#39;DET&#39;, 
+                                    &#39;HOU&#39;, &#39;KCA&#39;, &#39;ANA&#39;, &#39;MIN&#39;, &#39;NYA&#39;, 
+                                    &#39;OAK&#39;, &#39;SEA&#39;, &#39;TBA&#39;, &#39;TEX&#39;, &#39;TOR&#39;)){
+  pitchers &lt;- plays %&gt;%
+    filter(INN_CT &lt; 8) %&gt;%
+    pull(PIT_ID) %&gt;% unique()
+  
+  plays &lt;- plays %&gt;%
+    filter(!BAT_ID %in% pitchers) %&gt;%
+    mutate(BAT_ID = ifelse(HOME_TEAM_ID %in% AL, &quot;AL&quot;, &quot;NL&quot;))
+  
+  wOBA.AL &lt;- get_wOBA(&quot;AL&quot;, plays, run.values)
+  wOBA.NL &lt;- get_wOBA(&quot;NL&quot;, plays, run.values)
+  
+  return(
+    data.frame(
+      league = c(&quot;AL&quot;, &quot;NL&quot;),
+      wOBA = c(wOBA.AL[&#39;wOBA&#39;], wOBA.NL[&#39;wOBA&#39;]),
+      PA = c(wOBA.AL[&#39;PA&#39;], wOBA.NL[&#39;PA&#39;])
+      )
+    )
+}
+
+league.wOBAs.2017 &lt;- get_league_wOBAs(plays2017, run.values.2017)
+
+
+make_park_factors &lt;- function(plays, regress = 0.1){
+  park.factors = plays %&gt;%
+    group_by(GAME_ID, HOME_TEAM_ID, AWAY_TEAM_ID) %&gt;%
+    summarize(runs = sum(runs.play)) %&gt;%
+    ungroup() %&gt;%
+    select(-GAME_ID) %&gt;%
+    rename(home = HOME_TEAM_ID, away = AWAY_TEAM_ID) %&gt;%
+    gather(location, team, -runs) %&gt;%
+    group_by(team, location) %&gt;%
+    summarize(RPG = mean(runs)) %&gt;%
+    spread(location, RPG) %&gt;%
+    mutate(PF = (home/away)/2 + 0.5) %&gt;%
+    mutate(PF = round((1 - regress)*PF + regress, 2)) %&gt;%
+    select(team, PF)
+  
+  return(park.factors)
+}
+
+park.factors.17.1yr &lt;- make_park_factors(plays2017)
+
+plays2016 &lt;- add_columns(get_plays(2016))
+plays2015 &lt;- add_columns(get_plays(2015))
+park.factors.17.3yr &lt;- rbind(plays2015, plays2016, plays2017) %&gt;%
+  make_park_factors(regress = 0.05)
+
+get_wRC_plus &lt;- function(player, plays, run.values, league.wOBAs, park.factors,
+                         AL = c(&#39;BAL&#39;, &#39;BOS&#39;, &#39;CHA&#39;, &#39;CLE&#39;, &#39;DET&#39;, 
+                                &#39;HOU&#39;, &#39;KCA&#39;, &#39;ANA&#39;, &#39;MIN&#39;, &#39;NYA&#39;, 
+                                &#39;OAK&#39;, &#39;SEA&#39;, &#39;TBA&#39;, &#39;TOR&#39;)){
+  
+  plays.player &lt;- plays %&gt;% ungroup() %&gt;%
+    filter(BAT_ID == player)
+  
+  tm &lt;- plays.player %&gt;%
+    filter(BAT_HOME_ID == 1) %&gt;%
+    slice(1) %&gt;% pull(HOME_TEAM_ID)
+  
+  PF &lt;- park.factors %&gt;%
+    filter(team == tm) %&gt;%
+    pull(PF)
+  
+  wOBA &lt;- get_wOBA(player, plays, run.values)
+  PA &lt;- wOBA[&#39;PA&#39;]
+  wOBA &lt;- wOBA[&#39;wOBA&#39;]
+  
+  OBP &lt;- run.values$wOBA.league
+  wOBA.scale &lt;- run.values$wOBA.scale
+  RpPA &lt;- run.values$RpPA
+  
+  lg &lt;- ifelse(tm %in% AL, &#39;AL&#39;, &#39;NL&#39;)
+  wOBA.league &lt;- league.wOBAs %&gt;% filter(league == lg) %&gt;% pull(wOBA)
+  PA.league &lt;- league.wOBAs %&gt;% filter(league == lg) %&gt;% pull(PA)
+  
+  wRC.league &lt;- ((wOBA.league - OBP)/wOBA.scale + RpPA)*PA.league
+  
+  wRC.plus &lt;- 100 * ( ( (wOBA - OBP)/wOBA.scale + RpPA) + (RpPA - PF*RpPA) )  /
+                    (wRC.league/PA.league)
+  
+  return(round(unname(wRC.plus)))
+}
+
+
+# get_wRC_plus(&#39;blacc001&#39;, plays2017, run.values.2017, league.wOBAs.2017, park.factors.3yr)
+# get_wOBA(&#39;judga001&#39;, plays2017, run.values.2017)
+# get_wRC_plus(&#39;judga001&#39;, plays2017, run.values.2017, league.wOBAs.2017, park.factors.2017)
+# get_wRC_plus(&#39;stanm004&#39;, plays2017, run.values.2017, league.wOBAs.2017, park.factors.2017)
+
+players.2017 &lt;- read_csv(&#39;/Users/walkerharrison/Downloads/master.csv&#39;) %&gt;%
+  mutate(playerid = as.integer(fg_id))
+
+fg &lt;- read_csv(&#39;/Users/walkerharrison/Downloads/FanGraphsLeaderboard.csv&#39;)
+
+leaders &lt;- fg %&gt;% inner_join(players.2017, by = &#39;playerid&#39;) %&gt;%
+  select(playerid, retro_id, Name, wOBA, `wRC+`)
+
+leaders &lt;- leaders %&gt;% rowwise() %&gt;% 
+  mutate(wOBA.us = get_wOBA(retro_id, plays2017, run.values.2017)[&#39;wOBA&#39;],
+        wRC.plus = get_wRC_plus(retro_id, plays2017, run.values.2017, league.wOBAs.2017, park.factors.17.3yr))
+
+g1 &lt;- leaders %&gt;% ggplot(aes(wOBA, wOBA.us)) + geom_point(size = 2, alpha = 0.3) + 
+  geom_abline(slope = 1, intercept = 0) + theme_bw()
+
+g2 &lt;- leaders %&gt;% ggplot(aes(`wRC+`, wRC.plus)) + geom_point(size = 2, alpha = 0.3) + 
+  geom_abline(slope = 1, intercept = 0) + theme_bw()
+
+grid.arrange(g1, g2, nrow = 1)</code></pre>
+<p><img src="../../posts/nono_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 
   </div>
   
 
 <div class="navigation navigation-single">
     
-    <a href="../../posts/migrate-from-jekyll/" class="navigation-prev">
+    <a href="../../posts/nono5/" class="navigation-prev">
       <i aria-hidden="true" class="fa fa-chevron-left"></i>
-      <span class="navigation-tittle">Migrate to Hugo from Jekyll</span>
+      <span class="navigation-tittle">mining the GroupMe text</span>
     </a>
     
     

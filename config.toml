@@ -59,19 +59,22 @@ theme = "hyde-hyde"
 
 ## Main Menu
 [[menu.main]]
-    name = "Posts"
-    weight = 100
+    name = "blog"
+    weight = 200
     identifier = "posts"
     url = "/posts/"
 [[menu.main]]
-    name = "Portfolio"
-    identifier = "portfolio"
-    weight = 200
-    url = "/portfolio/"
-[[menu.main]]
-    name = "About"
-    identifier = "about"
+    name = "consulting"
+    identifier = "consulting"
     weight = 300
+    url = "/consulting/"
+[[menu.main]]
+    name = "about"
+    identifier = "about"
+    weight = 100
     url = "/about/"
-    
-series = ["Go Web Dev"]
+[[menu.main]]
+    name = "resume"
+    identifier = "resume"
+    weight = 300
+    url = "/resume/"

@@ -1,12 +1,6 @@
-<span class="section__title">advanced baseball metrics from scratch</span>
+<span class="section__title">baseball metrics and research from scratch</span>
 <ul class="posts">
     {{ with where .Site.Pages "Params.weight" 1 }}
-        {{ partial "posts-list.html" . }}
-    {{ end }}
-</ul>
-<span class="section__title">reimplementing baseball papers</span>
-<ul class="posts">
-    {{ with where .Site.Pages "Params.weight" 2 }}
         {{ partial "posts-list.html" . }}
     {{ end }}
 </ul>
