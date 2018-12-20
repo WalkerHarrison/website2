@@ -2,47 +2,47 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Title</title>
-    <link>/categories/</link>
+    <link>https://walker-harrison.com/categories/</link>
     <description>Recent content in Categories on Title</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://walker-harrison.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Development</title>
-      <link>/categories/development/</link>
+      <link>https://walker-harrison.com/categories/development/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>/categories/development/</guid>
+      <guid>https://walker-harrison.com/categories/development/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Golang</title>
-      <link>/categories/golang/</link>
+      <link>https://walker-harrison.com/categories/golang/</link>
       <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>/categories/golang/</guid>
+      <guid>https://walker-harrison.com/categories/golang/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hugo</title>
-      <link>/categories/hugo/</link>
+      <link>https://walker-harrison.com/categories/hugo/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>/categories/hugo/</guid>
+      <guid>https://walker-harrison.com/categories/hugo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>/categories/r/</link>
+      <link>https://walker-harrison.com/categories/r/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
       
-      <guid>/categories/r/</guid>
+      <guid>https://walker-harrison.com/categories/r/</guid>
       <description></description>
     </item>
     
