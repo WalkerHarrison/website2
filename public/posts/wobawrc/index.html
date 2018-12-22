@@ -29,8 +29,7 @@ library(tidyverse) library(gridExtra) library(knitr) source(&quot;parse.retroshe
 <meta property="og:description" content="The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the get_plays function will check if the right .csv file already exists, and use the aforementioned parse.retrosheet2.pbp function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.
 library(tidyverse) library(gridExtra) library(knitr) source(&quot;parse.retrosheet.pbp.R&quot;) get_plays &lt;- function(season){ season.path &lt;- paste0(&#39;download.folder/unzipped/all&#39;, season, &#39;.csv&#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &lt;- read_csv(season." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/posts/wobawrc/" /><meta property="article:published_time" content="2015-07-23T21:13:14-05:00"/>
-<meta property="article:modified_time" content="2015-07-23T21:13:14-05:00"/><meta property="og:site_name" content="Title" />
+<meta property="og:url" content="/posts/wobawrc/" /><meta property="og:site_name" content="Title" />
 
 
     
@@ -188,19 +187,7 @@ library(tidyverse) library(gridExtra) library(knitr) source(&quot;parse.retroshe
 <div class="post__meta">
     
     
-      <i class="fas fa-calendar-alt"></i> Jul 23, 2015
     
-    
-    
-      
-      
-          in
-          
-          
-              <a class="badge badge-category" href="../../categories/r">R</a>
-              
-          
-      
     
     
     
