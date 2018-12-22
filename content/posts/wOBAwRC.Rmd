@@ -20,6 +20,7 @@ The first step, naturally, is to read in some data. If you've used retrosheet ev
 ```{r}
 library(tidyverse)
 library(gridExtra)
+library(knitr)
 source("parse.retrosheet.pbp.R")
 
 get_plays <- function(season){
@@ -70,7 +71,7 @@ add_columns <- function(plays.raw){
            on.third = ifelse(is.na(BASE3_RUN_ID), '_', '3B')) %>%
     mutate(base = paste(on.first, on.second, on.third),
            out = OUTS_CT) %>%
-    mutate(base_out = paste(base, out)) %>%
+    mutate(base_out = paste(base, out, sep = "  ")) %>%
     group_by(GAME_ID, INN_CT, BAT_HOME_ID) %>%
     mutate(base_out_end = lead(base_out, default = "END"),
            HOME_TEAM_ID = substr(GAME_ID, 1, 3)) %>%
@@ -91,7 +92,7 @@ Run expectancy matrices are important for a variety of reasons. First of all the
 
 Making such a matrix is mostly just an act of accounting. To calculate how many runs are left in an inning, you need to know two things: the current score and the score once the side is retired. To calculate the final score of an inning, we build a helper dataframe, `inning.runs` that keeps `runs.cum`, a cumulative sum of runs scored by each team within a game, and therefore acts as the scoreboard at the end of each half inning.
 
-We then `inner_join` this dataframe to the original plays by the half inning, and calculate the `runs.left` as the difference between `runs.current` (readily available from the existing columns) and `runs.cum`. 
+We then `inner_join` this dataframe to the original plays by the half inning, and calculate the `runs.left` as the difference between `runs.current` (readily available via the existing score columns) and `runs.cum`. 
 
 ```{r}
 make_RE_matrix <- function(plays){
@@ -120,6 +121,11 @@ make_RE_matrix <- function(plays){
 }
 
 RE.matrix2017 <- make_RE_matrix(plays2017)
+RE.matrix2017$matrix %>%
+  filter(base_out != "END") %>%
+  separate(base_out, c("base", "out"), sep = "  ") %>%
+  spread(out, runs.expected) %>%
+  kable(digits = 2)
 ```
 
 RUN VALUES BLAH

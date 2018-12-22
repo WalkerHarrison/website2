@@ -12,6 +12,7 @@ weight: 1
 <p>The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the <code>get_plays</code> function will check if the right .csv file already exists, and use the aforementioned <code>parse.retrosheet2.pbp</code> function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.</p>
 <pre class="r"><code>library(tidyverse)
 library(gridExtra)
+library(knitr)
 source(&quot;parse.retrosheet.pbp.R&quot;)
 
 get_plays &lt;- function(season){
@@ -56,7 +57,7 @@ plays2017.raw &lt;- get_plays(2017)</code></pre>
            on.third = ifelse(is.na(BASE3_RUN_ID), &#39;_&#39;, &#39;3B&#39;)) %&gt;%
     mutate(base = paste(on.first, on.second, on.third),
            out = OUTS_CT) %&gt;%
-    mutate(base_out = paste(base, out)) %&gt;%
+    mutate(base_out = paste(base, out, sep = &quot;  &quot;)) %&gt;%
     group_by(GAME_ID, INN_CT, BAT_HOME_ID) %&gt;%
     mutate(base_out_end = lead(base_out, default = &quot;END&quot;),
            HOME_TEAM_ID = substr(GAME_ID, 1, 3)) %&gt;%
@@ -72,7 +73,7 @@ plays2017 &lt;- add_columns(plays2017.raw)</code></pre>
 <p>Adding the columns allows us to construct a <strong>run expectancy matrix</strong>, an important concept in sabermetrics. A run expectancy matrix gives us the average remaining runs to be scored in an inning based on the base-out situation. The highest value of about 2.2 runs occurs, as you’d expect, with bases loaded and nobody out, while the lowest value, about a tenth of a run, occurs with two outs and nobody on.</p>
 <p>Run expectancy matrices are important for a variety of reasons. First of all they allow every play to be interpreted in the view of increased or decreased runs, which is the foundation of sabermetrics in the first place. As a result, you’re forced to understand baseball as a procession of state transitions authored by the pitcher and batter, where the best players are those who can harvest more runs out of the states they inherit. Plus, they’re also just a good reference for fans, since you can actually attach a number to your feelings about an inning as it unfolds: yes that leadoff double was good, but how good? Approximately two-thirds of a run.</p>
 <p>Making such a matrix is mostly just an act of accounting. To calculate how many runs are left in an inning, you need to know two things: the current score and the score once the side is retired. To calculate the final score of an inning, we build a helper dataframe, <code>inning.runs</code> that keeps <code>runs.cum</code>, a cumulative sum of runs scored by each team within a game, and therefore acts as the scoreboard at the end of each half inning.</p>
-<p>We then <code>inner_join</code> this dataframe to the original plays by the half inning, and calculate the <code>runs.left</code> as the difference between <code>runs.current</code> (readily available from the existing columns) and <code>runs.cum</code>.</p>
+<p>We then <code>inner_join</code> this dataframe to the original plays by the half inning, and calculate the <code>runs.left</code> as the difference between <code>runs.current</code> (readily available via the existing score columns) and <code>runs.cum</code>.</p>
 <pre class="r"><code>make_RE_matrix &lt;- function(plays){
   inning.runs &lt;&lt;- plays %&gt;%
     group_by(GAME_ID, INN_CT, BAT_HOME_ID) %&gt;%
@@ -98,7 +99,72 @@ plays2017 &lt;- add_columns(plays2017.raw)</code></pre>
   return(list(&quot;matrix&quot; = RE.matrix, &quot;runs&quot; = runs.league))
 }
 
-RE.matrix2017 &lt;- make_RE_matrix(plays2017)</code></pre>
+RE.matrix2017 &lt;- make_RE_matrix(plays2017)
+RE.matrix2017$matrix %&gt;%
+  filter(base_out != &quot;END&quot;) %&gt;%
+  separate(base_out, c(&quot;base&quot;, &quot;out&quot;), sep = &quot;  &quot;) %&gt;%
+  spread(out, runs.expected) %&gt;%
+  kable(digits = 2)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">base</th>
+<th align="right">0</th>
+<th align="right">1</th>
+<th align="right">2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">_ _ _</td>
+<td align="right">0.52</td>
+<td align="right">0.27</td>
+<td align="right">0.11</td>
+</tr>
+<tr class="even">
+<td align="left">_ _ 3B</td>
+<td align="right">1.41</td>
+<td align="right">0.98</td>
+<td align="right">0.38</td>
+</tr>
+<tr class="odd">
+<td align="left">_ 2B _</td>
+<td align="right">1.18</td>
+<td align="right">0.72</td>
+<td align="right">0.33</td>
+</tr>
+<tr class="even">
+<td align="left">_ 2B 3B</td>
+<td align="right">2.05</td>
+<td align="right">1.49</td>
+<td align="right">0.58</td>
+</tr>
+<tr class="odd">
+<td align="left">1B _ _</td>
+<td align="right">0.92</td>
+<td align="right">0.53</td>
+<td align="right">0.23</td>
+</tr>
+<tr class="even">
+<td align="left">1B _ 3B</td>
+<td align="right">1.83</td>
+<td align="right">1.22</td>
+<td align="right">0.50</td>
+</tr>
+<tr class="odd">
+<td align="left">1B 2B _</td>
+<td align="right">1.51</td>
+<td align="right">0.95</td>
+<td align="right">0.45</td>
+</tr>
+<tr class="even">
+<td align="left">1B 2B 3B</td>
+<td align="right">2.23</td>
+<td align="right">1.64</td>
+<td align="right">0.80</td>
+</tr>
+</tbody>
+</table>
 <p>RUN VALUES BLAH</p>
 <pre class="r"><code># get_run_values &lt;- function(plays, RE.matrix){
 #   

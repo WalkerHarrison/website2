@@ -1,24 +1,22 @@
-.img--headshot {
+/*.img--headshot {
   height: 200px;
-  width: 200px; }
+  width: 200px; } */
   
 .site__title {
   font-size: 1.5rem;
   margin-bottom: 0.5rem; }
-  .site__title a:hover {
-    border: none; }
-    
-.section__title {
-  font-size: 1.25rem; }
   
-p {
-  font-size: 0.8rem;
-  line-height: 1.5;
-}
-
 .hljs {
   font-size: 0.6rem;
   line-height: 1.5;}
+/*    
+.section__title {
+  font-size: 1.5rem; }
+  
+p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
   
 code {
   font-family: "SF-Mono", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Roboto Mono", "Ubuntu Mono", "Courier New", Courier, monospace;
@@ -138,4 +136,4 @@ code {
     float: left;
     width: 66.66666667%; }
   .portfolio-container {
-    width: 1360px; } }
+    width: 1360px; } } */

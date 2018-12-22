@@ -96,7 +96,7 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       
       <guid>/posts/wobawrc/</guid>
       <description>The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the get_plays function will check if the right .csv file already exists, and use the aforementioned parse.retrosheet2.pbp function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.
-library(tidyverse) library(gridExtra) source(&amp;quot;parse.retrosheet.pbp.R&amp;quot;) get_plays &amp;lt;- function(season){ season.path &amp;lt;- paste0(&amp;#39;download.folder/unzipped/all&amp;#39;, season, &amp;#39;.csv&amp;#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &amp;lt;- read_csv(season.</description>
+library(tidyverse) library(gridExtra) library(knitr) source(&amp;quot;parse.retrosheet.pbp.R&amp;quot;) get_plays &amp;lt;- function(season){ season.path &amp;lt;- paste0(&amp;#39;download.folder/unzipped/all&amp;#39;, season, &amp;#39;.csv&amp;#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &amp;lt;- read_csv(season.</description>
     </item>
     
   </channel>
