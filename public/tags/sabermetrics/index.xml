@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sabermetrics on Walker Harrison</title>
+    <link>/tags/sabermetrics/</link>
+    <description>Recent content in Sabermetrics on Walker Harrison</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    
+	<atom:link href="/tags/sabermetrics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>wOBA and wRC&#43;</title>
+      <link>/posts/wobawrc/</link>
+      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      
+      <guid>/posts/wobawrc/</guid>
+      <description>The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the get_plays function will check if the right .csv file already exists, and use the aforementioned parse.retrosheet2.pbp function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.
+library(tidyverse) library(gridExtra) source(&amp;quot;parse.retrosheet.pbp.R&amp;quot;) get_plays &amp;lt;- function(season){ season.path &amp;lt;- paste0(&amp;#39;download.folder/unzipped/all&amp;#39;, season, &amp;#39;.csv&amp;#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &amp;lt;- read_csv(season.</description>
+    </item>
+    
+  </channel>
+</rss>

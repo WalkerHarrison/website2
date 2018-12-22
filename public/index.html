@@ -192,9 +192,10 @@
         </span>
         <span >
         
-        R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+        This is what text will look like for my blog
+R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
 You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.
+summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.
         
         </span>
         
@@ -231,18 +232,19 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       
       <div class="post-list__item">
         <span class="item__title--big">
-          <a href="./posts/nono/" >wOBA and wRC&#43;</a>
+          <a href="./posts/wobawrc/" >wOBA and wRC&#43;</a>
         </span>
         <span class="item__date">
           Jul 23, 2015
         </span>
         <span >
         
-        library(tidyverse) library(gridExtra) setwd(&#39;/Users/walkerharrison/Downloads/chadwick-0.6.5&#39;) get_plays &lt;- function(season){ season.path &lt;- paste0(&#39;download.folder/unzipped/all&#39;, season, &#39;.csv&#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &lt;- read_csv(season.path) fields &lt;- read_csv(&#39;download.folder/unzipped/fields.csv&#39;) names(plays) &lt;- fields %&gt;% pull(Header) return(plays) } plays2017.raw &lt;- get_plays(2017) add_columns &lt;- function(plays.raw){ event_key &lt;- read_csv(&#39;download.folder/unzipped/event_key.csv&#39;) event_key$RESULT[event_key$EVENT_CD == 19] &lt;- &quot;Fielder&#39;s Choice&quot; plays.raw &lt;- plays.raw %&gt;% inner_join(event_key, by = &quot;EVENT_CD&quot;) %&gt;% mutate(RESULT = as.factor(RESULT)) plays &lt;- plays.raw %&gt;% rowwise() %&gt;% mutate(runs.play = sum(BAT_DEST_ID &gt; 3, RUN1_DEST_ID &gt; 3, RUN2_DEST_ID &gt; 3, RUN3_DEST_ID &gt; 3, na.
+        The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the get_plays function will check if the right .csv file already exists, and use the aforementioned parse.retrosheet2.pbp function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.
+library(tidyverse) library(gridExtra) source(&quot;parse.retrosheet.pbp.R&quot;) get_plays &lt;- function(season){ season.path &lt;- paste0(&#39;download.folder/unzipped/all&#39;, season, &#39;.csv&#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &lt;- read_csv(season.
         
         </span>
         
-          ... <a class="read-more-symbol" href="./posts/nono/">➦</a>
+          ... <a class="read-more-symbol" href="./posts/wobawrc/">➦</a>
         
         </div>
         

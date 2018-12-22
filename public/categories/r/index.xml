@@ -17,9 +17,10 @@
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
       
       <guid>/posts/nono2/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+      <description>This is what text will look like for my blog
+R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
 You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.</description>
     </item>
     
     <item>
@@ -90,11 +91,12 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
     
     <item>
       <title>wOBA and wRC&#43;</title>
-      <link>/posts/nono/</link>
+      <link>/posts/wobawrc/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
       
-      <guid>/posts/nono/</guid>
-      <description>library(tidyverse) library(gridExtra) setwd(&amp;#39;/Users/walkerharrison/Downloads/chadwick-0.6.5&amp;#39;) get_plays &amp;lt;- function(season){ season.path &amp;lt;- paste0(&amp;#39;download.folder/unzipped/all&amp;#39;, season, &amp;#39;.csv&amp;#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &amp;lt;- read_csv(season.path) fields &amp;lt;- read_csv(&amp;#39;download.folder/unzipped/fields.csv&amp;#39;) names(plays) &amp;lt;- fields %&amp;gt;% pull(Header) return(plays) } plays2017.raw &amp;lt;- get_plays(2017) add_columns &amp;lt;- function(plays.raw){ event_key &amp;lt;- read_csv(&amp;#39;download.folder/unzipped/event_key.csv&amp;#39;) event_key$RESULT[event_key$EVENT_CD == 19] &amp;lt;- &amp;quot;Fielder&amp;#39;s Choice&amp;quot; plays.raw &amp;lt;- plays.raw %&amp;gt;% inner_join(event_key, by = &amp;quot;EVENT_CD&amp;quot;) %&amp;gt;% mutate(RESULT = as.factor(RESULT)) plays &amp;lt;- plays.raw %&amp;gt;% rowwise() %&amp;gt;% mutate(runs.play = sum(BAT_DEST_ID &amp;gt; 3, RUN1_DEST_ID &amp;gt; 3, RUN2_DEST_ID &amp;gt; 3, RUN3_DEST_ID &amp;gt; 3, na.</description>
+      <guid>/posts/wobawrc/</guid>
+      <description>The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the get_plays function will check if the right .csv file already exists, and use the aforementioned parse.retrosheet2.pbp function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.
+library(tidyverse) library(gridExtra) source(&amp;quot;parse.retrosheet.pbp.R&amp;quot;) get_plays &amp;lt;- function(season){ season.path &amp;lt;- paste0(&amp;#39;download.folder/unzipped/all&amp;#39;, season, &amp;#39;.csv&amp;#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &amp;lt;- read_csv(season.</description>
     </item>
     
   </channel>

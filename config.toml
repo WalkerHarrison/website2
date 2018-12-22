@@ -24,6 +24,7 @@ theme = "hyde-hyde"
     dateformat = "Jan 2, 2006"
     themeColor = "theme-base-0d"
     custom_css = ["css/mystyles.css"]
+    ignorefiles = [ "data/.*", "\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
     # sidebar, copyright & license
     copyright = "htr3n"

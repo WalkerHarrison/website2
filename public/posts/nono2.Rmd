@@ -7,6 +7,8 @@ tags: ["R Markdown", "plot", "regression"]
 weight: 1
 ---
 
+This is what text will look like for my blog
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
