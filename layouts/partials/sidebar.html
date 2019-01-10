@@ -13,7 +13,7 @@
         {{ $strippedSlash := ($.Site.Params.authorimage | replaceRE "^(/)+(.*)" "$2") }}
         {{ $authorImage := (printf "%s%s" $.Site.BaseURL $strippedSlash) }}
         <div class="author-image">
-          <img src="{{$authorImage}}" alt="MOM" class="img--circle img--headshot element--center">
+          <img src="{{$authorImage}}" alt="great pic" class="img--circle img--headshot element--center">
         </div>
         {{ end }}
       {{ end }}
