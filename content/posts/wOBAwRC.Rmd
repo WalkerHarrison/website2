@@ -3,14 +3,20 @@ title: "wOBA and wRC+"
 tags: ["sabermetrics"]
 weight: 1
 ---
+
+
+
 ```{r setup, include = FALSE}
 knitr::opts_knit$set(root.dir = "/Users/walkerharrison/Desktop/Website/data/chadwick-0.6.5/")
 knitr::opts_chunk$set(warning=FALSE,
                       message=FALSE,
-                      cache = TRUE)
+                      cache = TRUE,
+                      eval = FALSE,
+                      include = FALSE)
 
 ```
 
+RETROSHEET PRIMER
 
 The first step, naturally, is to read in some data. If you've used retrosheet event files before, the `get_plays` function will check if the right .csv file already exists, and use the aforementioned `parse.retrosheet2.pbp` function if it doesn't. Once the column names are attached, we have our raw play-by-play data for a single season.
 
@@ -35,6 +41,9 @@ get_plays <- function(season){
 plays2017.raw <- get_plays(2017)
 ```
 
+It's useful to show a graphical representation of the information flow required make these statstics, since the multiple ingre
+
+
 As is, our dataframe contains dozens of columns we don't want and is missing a few that we do. First off, the analysis is much more intuitive if we have the text description of a play instead of the `EVENT_CD` encoding (i.e. `"Home run"` instead of `23`). More importantly though we need to know two things for each play:
 
 + how many runs scored
@@ -47,7 +56,10 @@ To create the second column, we note whether each base is empty (`is.na`), and t
 We also need the base-out situation once the play is over, which we get from taking the base-out situation of the subsequent play with the `lead` function. Grouping by the game, inning number, and inning side ensures that the last play of the frame doesn't inherit empty bases, but rather the default that we define (`"END"`). 
 
 ```{r}
-add_columns <- function(plays.raw){
+add_columns <- function(plays.raw, 
+                        AL = c('BAL', 'BOS', 'CHA', 'CLE', 'DET',
+                               'HOU', 'KCA', 'ANA', 'MIN', 'NYA',
+                               'OAK', 'SEA', 'TBA', 'TEX', 'TOR')){
   
   event_key <- read_csv('download.folder/unzipped/event_key.csv')
   
@@ -56,8 +68,8 @@ add_columns <- function(plays.raw){
   plays.raw <- plays.raw %>% inner_join(event_key, by = "EVENT_CD") %>%
     mutate(RESULT = as.factor(RESULT))
   
-  plays <- plays.raw %>% 
-    rowwise() %>%
+  plays <- plays.raw %>% rowwise() %>%
+    
     # how many people scored on the play?
     mutate(runs.play = sum(BAT_DEST_ID > 3,
                            RUN1_DEST_ID > 3,
@@ -76,9 +88,13 @@ add_columns <- function(plays.raw){
     # derive new base-out situation
     group_by(GAME_ID, INN_CT, BAT_HOME_ID) %>%
     mutate(base_out_end = lead(base_out, default = "END"),
-           HOME_TEAM_ID = substr(GAME_ID, 1, 3)) %>%
-    select(GAME_ID, HOME_TEAM_ID, AWAY_TEAM_ID, INN_CT, BAT_HOME_ID, 
-           OUTS_CT, AWAY_SCORE_CT, HOME_SCORE_CT, BAT_ID, PIT_ID, 
+           HOME_TEAM_ID = substr(GAME_ID, 1, 3),
+           league = ifelse(HOME_TEAM_ID %in% AL, "AL", "NL"),
+           BATTER_TEAM_ID = ifelse(BAT_HOME_ID == 1, 
+                                   HOME_TEAM_ID, AWAY_TEAM_ID)) %>%
+    select(GAME_ID, HOME_TEAM_ID, AWAY_TEAM_ID, league, BATTER_TEAM_ID,
+           INN_CT, BAT_HOME_ID, OUTS_CT, AWAY_SCORE_CT, 
+           HOME_SCORE_CT, BAT_ID, PIT_ID, 
            EVENT_CD, AB_FL, H_FL, SH_FL, SF_FL, RESULT, 
            runs.play, base_out, base_out_end)
   
@@ -107,32 +123,27 @@ make_RE_matrix <- function(plays){
     group_by(GAME_ID, BAT_HOME_ID) %>%
     mutate(runs.cum = cumsum(runs.inning))
   
-  runs.league <<- inning.runs %>%
-    group_by(GAME_ID, BAT_HOME_ID) %>%
-    summarize(runs = max(runs.cum)) %>%
-    ungroup() %>%
-    summarize(runs = sum(runs)) %>%
-    pull(runs)
-  
   # average remaining runs over season
   RE.matrix <- plays  %>%
     inner_join(inning.runs, by = c('GAME_ID', 'INN_CT', 'BAT_HOME_ID')) %>%
-    mutate(runs.current = ifelse(BAT_HOME_ID == 1, HOME_SCORE_CT, AWAY_SCORE_CT)) %>%
+    mutate(runs.current = ifelse(BAT_HOME_ID == 1, 
+                                 HOME_SCORE_CT, AWAY_SCORE_CT)) %>%
     mutate(runs.left = runs.cum - runs.current) %>%
     group_by(base_out) %>% summarize(runs.expected = mean(runs.left)) %>%
     rbind(data.frame(base_out = "END", runs.expected = 0))
   
-  return(list("matrix" = RE.matrix, "runs" = runs.league))
+  return(RE.matrix)
 }
 
 RE.matrix2017 <- make_RE_matrix(plays2017)
-RE.matrix2017$matrix %>%
+RE.matrix2017 %>%
   filter(base_out != "END") %>%
   separate(base_out, c("base", "out"), sep = "  ") %>%
   spread(out, runs.expected) %>%
   arrange(`0`) %>%
   kable(digits = 2)
 ```
+
 Now that we know the value of each base-out situation, we can calculate how many runs every play is worth by adding the situational change in run values to however many runs actually scored on the play. So if a batter comes up with one out and men on first and second and proceeds to hit a double that drives in the lead runner and advances the other to third base, he'll be credited with the run driven in (+1) as well as the situational run-value change (+0.54). 
 
 If you average all of these run-value changes over every instance of the event, you can attach a `run.value` to everything from a strikeout to a triple. In order to keep with tradition and lower bound wOBA at 0, we shift all the values up based on the run-value of an out, so that we're now focused on `run.value.over.out` for each type of positive offensive play. These are the underlying calibrations that make up wOBA and that we substitute for, say, merely adding up total bases to create slugging percentage. 
@@ -141,23 +152,19 @@ However, it's hard for a new-fangled metric to catch on if fans not only have to
 
 ```{r}
 get_run_values <- function(plays, RE.matrix){
-
-  matrix <- RE.matrix$matrix
-  runs <- RE.matrix$runs
-
+  
   run.values <- plays %>%
-    
     # calculate situation change in run values
-    inner_join(matrix, by = "base_out") %>%
-    inner_join(matrix, by = c("base_out_end" = "base_out")) %>%
+    inner_join(RE.matrix, by = "base_out") %>%
+    inner_join(RE.matrix, by = c("base_out_end" = "base_out")) %>%
     rename(runs.expected = runs.expected.x,
            runs.expected.end = runs.expected.y) %>%
-    
     # add the change to any runs scored
     group_by(RESULT) %>%
     summarize(n = n(),
               run.value = mean(runs.play + runs.expected.end - runs.expected))
 
+  
   out.value <- run.values %>%
     filter(RESULT %in% c("Generic out", "Strikeout", "Fielder's Choice")) %>%
     summarize(run.value = weighted.mean(run.value, w = n)) %>%
@@ -168,17 +175,21 @@ get_run_values <- function(plays, RE.matrix){
     mutate(run.value.over.out = run.value - out.value)
 
   PA.league <- sum(plays$AB_FL) + sum(plays$SH_FL) + sum(plays$SF_FL) +
-              sum(plays$RESULT %in% c("Walk", "Intentional walk", "Hit by pitch", "Interference"))
-
-  runs.per.PA <- runs/PA.league
+               sum(plays$RESULT %in% 
+                     c("Walk", "Intentional walk", 
+                       "Hit by pitch", "Interference"))
   
-  # calculate average OBP wOBA across league
+  # calculate average OBP across league
 
-  OBP.league <- (sum(plays$H_FL > 0) + sum(plays$RESULT %in% c("Walk", "Hit by pitch")))/
-               (sum(plays$AB_FL) + sum(plays$SF_FL) + sum(plays$RESULT %in% c("Walk", "Hit by pitch")))
+  OBP.league <- (sum(plays$H_FL > 0) + 
+                 sum(plays$RESULT %in% c("Walk", "Hit by pitch"))) /
+               (sum(plays$AB_FL) + sum(plays$SF_FL) + 
+                sum(plays$RESULT %in% c("Walk", "Hit by pitch")))
 
   wOBA.raw <- run.values %>%
-    filter(RESULT %in% c("Home run", "Triple", "Double", "Single", "Hit by pitch", "Walk", "Intentional walk")) %>%
+    filter(RESULT %in% 
+             c("Home run", "Triple", "Double", "Single", 
+               "Hit by pitch", "Walk", "Intentional walk")) %>%
     summarize(run.value.over.out = sum(run.value.over.out*n)) %>%
     pull(run.value.over.out)/PA.league
 
@@ -186,77 +197,64 @@ get_run_values <- function(plays, RE.matrix){
   wOBA.scale <- OBP.league/wOBA.raw
 
   run.values <- run.values %>%
-    mutate(weight = run.value.over.out*wOBA.scale)
+    mutate(OBP.league = OBP.league,
+           wOBA.scale = wOBA.scale,
+           weight = run.value.over.out*wOBA.scale)
 
-  return(list("RV" = run.values, "OBP.league" = OBP.league, "wOBA.scale" = wOBA.scale, "RpPA" = runs.per.PA))
+  return(run.values)
 }
 
 run.values.2017 <- get_run_values(plays2017, RE.matrix2017)
 ```
 
-wOBA function rewrite
 
 ```{r}
-get_wOBA <- function(player, plays, run.values){
 
-  plays.player <- plays %>% ungroup() %>%
-    filter(BAT_ID == player)
+wOBAs2017 <- plays2017 %>%
+  group_by(BAT_ID, league, BATTER_TEAM_ID) %>%
+  summarize(NIBB = sum(RESULT == "Walk"),
+            IBB  = sum(RESULT == "Intentional walk"),
+            HBP = sum(RESULT == "Hit by pitch"),
+            B1 = sum(RESULT == "Single"),
+            B2 = sum(RESULT == "Double"),
+            B3 = sum(RESULT == "Triple"),
+            HR = sum(RESULT == "Home run"),
+            SF = sum(SF_FL),
+            AB = sum(AB_FL),
+            PA = sum(AB_FL) + sum(SH_FL) + sum(SF_FL) +
+                  sum(RESULT %in% c("Walk", "Intentional walk", 
+                                    "Hit by pitch", "Interference")),
+            R = sum(runs.play)) %>%
+  mutate(wB1 = run.values.2017 %>% filter(RESULT == "Single") %>% pull(weight),
+         wB2 = run.values.2017 %>% filter(RESULT == "Double") %>% pull(weight),
+         wB3 = run.values.2017 %>% filter(RESULT == "Triple") %>% pull(weight),
+         wHR = run.values.2017 %>% filter(RESULT == "Home run") %>% pull(weight),
+         wBB = run.values.2017 %>% filter(RESULT == "Walk") %>% pull(weight),
+         wHBP = run.values.2017 %>% filter(RESULT == "Hit by pitch") %>% pull(weight)) %>%
+  
+  mutate(wOBA = 
+          (wBB*(NIBB) + wHBP*HBP + wB1*B1 + wB2*B2 + wB3*B3 + wHR*HR)/
+          (AB + NIBB + SF + HBP))
 
-  player.events <- plays.player %>% count(RESULT) %>% complete(RESULT, fill = list(n=0))
+```
 
-  NIBB <- player.events %>% filter(RESULT == "Walk") %>% pull(n)
-  IBB <- player.events %>% filter(RESULT == "Intentional walk") %>% pull(n)
-  HBP <- player.events %>% filter(RESULT == "Hit by pitch") %>% pull(n)
-  B1 <- player.events %>% filter(RESULT == "Single") %>% pull(n)
-  B2 <- player.events %>% filter(RESULT == "Double") %>% pull(n)
-  B3 <- player.events %>% filter(RESULT == "Triple") %>% pull(n)
-  HR <- player.events %>% filter(RESULT == "Home run") %>% pull(n)
-  SF <- sum(plays.player$SF_FL)
-  AB <- sum(plays.player$AB_FL)
-  PA <- sum(plays.player$AB_FL) + sum(plays.player$SH_FL) + sum(plays.player$SF_FL) +
-    sum(plays.player$RESULT %in% c("Walk", "Intentional walk", "Hit by pitch", "Interference"))
+```{r}
+pitchers <- plays2017 %>%
+  filter(INN_CT < 8) %>%
+  pull(PIT_ID) %>% unique()
 
-  RV <- run.values$RV
+league.stats <- wOBAs2017 %>%
+  filter(!BAT_ID %in% pitchers) %>%
+  group_by(league) %>%
+  summarize(wOBA.league = weighted.mean(wOBA, w = PA, na.rm = TRUE),
+            PA.league = sum(PA),
+            R.league = sum(R),
+            OBP.league = mean(run.values.2017$OBP.league),
+            wOBA.scale = mean(run.values.2017$wOBA.scale)) %>%
+  mutate(wRC.league = ((wOBA.league - OBP.league)/wOBA.scale + R.league/PA.league)*PA.league)
+```
 
-  wB1 <- RV %>% filter(RESULT == "Single") %>% pull(weight)
-  wB2 <- RV %>% filter(RESULT == "Double") %>% pull(weight)
-  wB3 <- RV %>% filter(RESULT == "Triple") %>% pull(weight)
-  wHR <- RV %>% filter(RESULT == "Home run") %>% pull(weight)
-  wBB <- RV %>% filter(RESULT == "Walk") %>% pull(weight)
-  wHBP <- RV %>% filter(RESULT == "Hit by pitch") %>% pull(weight)
-
-  wOBA <- (wBB*(NIBB) + wHBP*HBP + wB1*B1 + wB2*B2 + wB3*B3 + wHR*HR)/
-          (AB + NIBB + SF + HBP)
-
-  return(c('PA' = PA, 'wOBA' = round(wOBA, 3)))
-}
-
-get_league_wOBAs <- function(plays, run.values,
-                             AL = c('BAL', 'BOS', 'CHA', 'CLE', 'DET',
-                                    'HOU', 'KCA', 'ANA', 'MIN', 'NYA',
-                                    'OAK', 'SEA', 'TBA', 'TEX', 'TOR')){
-  pitchers <- plays %>%
-    filter(INN_CT < 8) %>%
-    pull(PIT_ID) %>% unique()
-
-  plays <- plays %>%
-    filter(!BAT_ID %in% pitchers) %>%
-    mutate(BAT_ID = ifelse(HOME_TEAM_ID %in% AL, "AL", "NL"))
-
-  wOBA.AL <- get_wOBA("AL", plays, run.values)
-  wOBA.NL <- get_wOBA("NL", plays, run.values)
-
-  return(
-    data.frame(
-      league = c("AL", "NL"),
-      wOBA = c(wOBA.AL['wOBA'], wOBA.NL['wOBA']),
-      PA = c(wOBA.AL['PA'], wOBA.NL['PA'])
-      )
-    )
-}
-
-league.wOBAs.2017 <- get_league_wOBAs(plays2017, run.values.2017)
-
+```{r}
 
 make_park_factors <- function(plays, regress = 0.1){
   park.factors = plays %>%
@@ -283,6 +281,16 @@ plays2015 <- add_columns(get_plays(2015))
 park.factors.17.3yr <- rbind(plays2015, plays2016, plays2017) %>%
   make_park_factors(regress = 0.05)
 
+wRCs2017 <- wOBAs2017 %>%
+  inner_join(park.factors.17.3yr, by = c('BATTER_TEAM_ID' = 'team')) %>%
+  inner_join(league.stats, by = "league") %>%
+  mutate(wRC.plus = 100 * ( ( (wOBA - OBP.league)/wOBA.scale + R.league/PA.league) + (R.league/PA.league - PF*R.league/PA.league) )  /
+                    (wRC.league/PA.league))
+```
+
+
+  
+  
 get_wRC_plus <- function(player, plays, run.values, league.wOBAs, park.factors,
                          AL = c('BAL', 'BOS', 'CHA', 'CLE', 'DET',
                                 'HOU', 'KCA', 'ANA', 'MIN', 'NYA',
@@ -319,7 +327,7 @@ get_wRC_plus <- function(player, plays, run.values, league.wOBAs, park.factors,
   return(round(unname(wRC.plus)))
 }
 
-
+```{r}
 players.2017 <- read_csv('/Users/walkerharrison/Downloads/master.csv') %>%
   mutate(playerid = as.integer(fg_id))
 
@@ -327,6 +335,8 @@ fg <- read_csv('/Users/walkerharrison/Downloads/FanGraphsLeaderboard.csv')
 
 leaders <- fg %>% inner_join(players.2017, by = 'playerid') %>%
   select(playerid, retro_id, Name, wOBA, `wRC+`)
+
+leaders %>% inner_join(wRCs2017, by = c('retro_id' = 'BAT_ID')) %>% View()
 
 leaders <- leaders %>% rowwise() %>%
   mutate(wOBA.us = get_wOBA(retro_id, plays2017, run.values.2017)['wOBA'],

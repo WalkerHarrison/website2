@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Walker Harrison</title>
+    <title>Landing Page on Walker Harrison</title>
     <link>/</link>
-    <description>Recent content on Walker Harrison</description>
+    <description>Recent content in Landing Page on Walker Harrison</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jan 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
@@ -40,8 +40,9 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/posts/wobawrc/</guid>
-      <description>The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the get_plays function will check if the right .csv file already exists, and use the aforementioned parse.retrosheet2.pbp function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.
-library(tidyverse) library(gridExtra) library(knitr) source(&amp;quot;parse.retrosheet.pbp.R&amp;quot;) get_plays &amp;lt;- function(season){ season.path &amp;lt;- paste0(&amp;#39;download.folder/unzipped/all&amp;#39;, season, &amp;#39;.csv&amp;#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &amp;lt;- read_csv(season.</description>
+      <description>RETROSHEET PRIMER
+The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the get_plays function will check if the right .csv file already exists, and use the aforementioned parse.retrosheet2.pbp function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.
+It’s useful to show a graphical representation of the information flow required make these statstics, since the multiple ingre</description>
     </item>
     
     <item>
@@ -135,6 +136,15 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       <description>Hugo is a static site engine written in Go.
 It makes use of a variety of open source projects including:
  Cobra Viper J Walter Weatherman Cast  Learn more and contribute on GitHub.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/posts/testgraphz/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/testgraphz/</guid>
+      <description> \usetikzlibrary{arrows} \begin{tikzpicture}[node distance=2cm, auto,&amp;gt;=latex&amp;#39;, thick, scale = 0.5] \node (P) {$P$}; \node (B) [right of=P] {$B$}; \node (A) [below of=P] {$A$}; \node (C) [below of=B] {$C$}; \node (P1) [node distance=1.4cm, left of=P, above of=P] {$\hat{P}$}; \draw[-&amp;gt;] (P) to node {$f$} (B); \draw[-&amp;gt;] (P) to node [swap] {$g$} (A); \draw[-&amp;gt;] (A) to node [swap] {$f$} (C); \draw[-&amp;gt;] (B) to node {$g$} (C); \draw[-&amp;gt;, bend right] (P1) to node [swap] {$\hat{g}$} (A); \draw[-&amp;gt;, bend left] (P1) to node {$\hat{f}$} (B); \draw[-&amp;gt;, dashed] (P1) to node {$k$} (P); \end{tikzpicture} </description>
     </item>
     
   </channel>

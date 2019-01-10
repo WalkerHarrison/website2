@@ -40,8 +40,9 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/posts/wobawrc/</guid>
-      <description>The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the get_plays function will check if the right .csv file already exists, and use the aforementioned parse.retrosheet2.pbp function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.
-library(tidyverse) library(gridExtra) library(knitr) source(&amp;quot;parse.retrosheet.pbp.R&amp;quot;) get_plays &amp;lt;- function(season){ season.path &amp;lt;- paste0(&amp;#39;download.folder/unzipped/all&amp;#39;, season, &amp;#39;.csv&amp;#39;) if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)} plays &amp;lt;- read_csv(season.</description>
+      <description>RETROSHEET PRIMER
+The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the get_plays function will check if the right .csv file already exists, and use the aforementioned parse.retrosheet2.pbp function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.
+It’s useful to show a graphical representation of the information flow required make these statstics, since the multiple ingre</description>
     </item>
     
     <item>
@@ -97,6 +98,15 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
 You can embed an R code chunk like this:
 summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/posts/testgraphz/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/testgraphz/</guid>
+      <description> \usetikzlibrary{arrows} \begin{tikzpicture}[node distance=2cm, auto,&amp;gt;=latex&amp;#39;, thick, scale = 0.5] \node (P) {$P$}; \node (B) [right of=P] {$B$}; \node (A) [below of=P] {$A$}; \node (C) [below of=B] {$C$}; \node (P1) [node distance=1.4cm, left of=P, above of=P] {$\hat{P}$}; \draw[-&amp;gt;] (P) to node {$f$} (B); \draw[-&amp;gt;] (P) to node [swap] {$g$} (A); \draw[-&amp;gt;] (A) to node [swap] {$f$} (C); \draw[-&amp;gt;] (B) to node {$g$} (C); \draw[-&amp;gt;, bend right] (P1) to node [swap] {$\hat{g}$} (A); \draw[-&amp;gt;, bend left] (P1) to node {$\hat{f}$} (B); \draw[-&amp;gt;, dashed] (P1) to node {$k$} (P); \end{tikzpicture} </description>
     </item>
     
   </channel>

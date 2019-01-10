@@ -69,11 +69,11 @@ theme = "hyde-hyde"
     identifier = "consulting"
     weight = 300
     url = "/consulting/"
-[[menu.main]]
-    name = "about"
-    identifier = "about"
-    weight = 100
-    url = "/about/"
+#[[menu.main]]
+    #name = "about"
+    #identifier = "about"
+    #weight = 100
+    #url = "/about/"
 [[menu.main]]
     name = "resume"
     identifier = "resume"
