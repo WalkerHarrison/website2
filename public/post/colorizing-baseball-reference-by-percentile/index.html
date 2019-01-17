@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Cache-Control" content="public" />
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.52" />
+
+    
+    
+    
+
+<title>colorizing Baseball Reference by percentile • Walker Harrison</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="colorizing Baseball Reference by percentile"/>
+<meta name="twitter:description" content="One of the reasons the wider baseball community is sometimes slow to adopt different methodologies is that new metrics require memorizing new context. Anybody that’s picked up a baseball card in the last century can tell you that a power hitter should slug 30 home runs, but what qualifies as an excellent strikeout-to-walk ratio?
+One solution is to normalize a new statistic onto an existing one so that it inherits the same ____: stats like wOBA and FIP are scaled onto OBP and ERA, respectively, so that people can have a better idea of what constitutes success."/>
+
+<meta property="og:title" content="colorizing Baseball Reference by percentile" />
+<meta property="og:description" content="One of the reasons the wider baseball community is sometimes slow to adopt different methodologies is that new metrics require memorizing new context. Anybody that’s picked up a baseball card in the last century can tell you that a power hitter should slug 30 home runs, but what qualifies as an excellent strikeout-to-walk ratio?
+One solution is to normalize a new statistic onto an existing one so that it inherits the same ____: stats like wOBA and FIP are scaled onto OBP and ERA, respectively, so that people can have a better idea of what constitutes success." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/colorizing-baseball-reference-by-percentile/" /><meta property="article:published_time" content="2019-01-16T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-01-16T21:58:22-05:00"/><meta property="og:site_name" content="Title" />
+
+
+    
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../../scss/hyde-hyde.9181f25ed2263aeb878ec6f8a84f10c4ebb16150000fca8767308880bdde5ca0.css" integrity="sha256-kYHyXtImOuuHjsb4qE8QxOuxYVAAD8qHZzCIgL3eXKA=">
+
+
+<link rel="stylesheet" href="../../scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="../../favicon.png">
+    
+
+</head>
+
+
+    <body class="theme-base-0d ">
+    
+
+    <link rel="stylesheet" href="../../css/mystyles.css">
+
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="../../">Walker Harrison</a>
+      </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="../../img/headshot.jpg" alt="great pic" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Walker Harrison</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="../../posts/">
+						<span>Blog</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="../../consulting/">
+						<span>Consulting</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="../../resume/">
+						<span>Resume</span>
+					</a>
+				</li>
+			 
+		
+		</li>
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/%3cusername%3e" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	<a href="https://facebook.com/%3cusername%3e" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/%3cusername%3e" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	<a href="https://instagram.com/%3cusername%3e" rel="me"><i class="fab fa-instagram fa-lg" aria-hidden="true"></i></a>
+	
+	
+	<a href="https://linkedin.com/in/%3cusername%3e" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	<a href="mailto:your-email@example.com" rel="me"><i class="fas fa-at fa-lg" aria-hidden="true"></i></a>
+	
+</section>
+
+      </div>
+    </div>
+    
+<div class="copyright">
+  &copy; 2019 htr3n
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    <article>
+  <header>
+    <h1>colorizing Baseball Reference by percentile</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Jan 16, 2019
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="../../tags/sabermetrics">sabermetrics</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 7 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    
+
+
+<p>One of the reasons the wider baseball community is sometimes slow to adopt different methodologies is that new metrics require memorizing new context. Anybody that’s picked up a baseball card in the last century can tell you that a power hitter should slug 30 home runs, but what qualifies as an excellent strikeout-to-walk ratio?</p>
+<p>One solution is to normalize a new statistic onto an existing one so that it inherits the same ____: stats like wOBA and FIP are scaled onto OBP and ERA, respectively, so that people can have a better idea of what constitutes success. Another is to center a statistic around 100 so that it reads as percentage above or below average, as is done with any stat with a trailing “+” or “-” (wRC+, ERA-, etc.)</p>
+<p>Still though, it would be nice to be able to understand players relative to their colleagues on a more widespread basis, which is why the goal of this post is to take the ever-popular Baseball Reference webpages and colorize their standard pitching tables according to the percentile of each statistic. Outlying figures should burst off the page while typical values wear more modest shades.</p>
+<p>First we need data. Since we only require season totals, the Lahman database will suffice, although we’ll need to read the datasets in from Chadwick GitHub repo since the R package <code>Lahman</code> only runs through the 2016 season:</p>
+<pre class="r"><code>library(tidyverse)
+library(RColorBrewer)
+library(rvest)
+
+base.url &lt;- &quot;https://raw.githubusercontent.com/chadwickbureau/baseballdatabank/master/core/&quot;
+
+pitching.url &lt;- paste0(base.url, &quot;Pitching.csv&quot;)
+players.url &lt;- paste0(base.url, &quot;People.csv&quot;)
+
+pitching &lt;- read_csv(pitching.url)
+players &lt;- read_csv(players.url)</code></pre>
+<p>Ultimately we need to compare this data to whatever we scrape from Baseball Reference, so it’s important the both the numbers and the column names are consistent. First we must create aggregate seasons for any pitcher who played for multiple teams in a single season, which is achieved by grouping across players and seasons and then using the <code>summarize_if</code> function on any numeric columns. After that, we can create all of our rate statistics, taking care to name them not after the BR page but actually in accordance with the underlying HTML attribute of the webpage’s table entries (i.e. <code>earned_run_avg</code> not <code>ERA</code>). This will come in handy later.</p>
+<p>Note that in order to derive <a href="https://library.fangraphs.com/pitching/fip/">FIP</a>, we need to first calulate the FIP constant by summing up some league wide stats:</p>
+<pre class="r"><code>pitching &lt;- pitching %&gt;%
+  group_by(playerID, yearID) %&gt;%
+  mutate(IBB = as.numeric(IBB)) %&gt;%
+  rename(batters_faced = BFP) %&gt;%
+  summarize_if(is.numeric, sum, na.rm = TRUE) %&gt;%
+  mutate(win_loss_perc = W/(W+L),
+         IP = as.numeric(paste(IPouts %/% 3, IPouts %% 3, sep = &quot;.&quot;)),
+         earned_run_avg = ER/IPouts*27,
+         whip = (H+BB)/IPouts*3,
+         hits_per_nine = round(H/IPouts*27, 1),
+         home_runs_per_nine = round(HR/IPouts*27, 1),
+         bases_on_balls_per_nine = round(BB/IPouts*27, 1),
+         strikeouts_per_nine = round(SO/IPouts*27, 1),
+         strikeouts_per_base_on_balls = round(SO/BB, 1)) %&gt;%
+  group_by(yearID) %&gt;%
+  mutate(lgERA = sum(ER)/sum(IPouts/3)*9,
+         lgHR = sum(HR),
+         lgBB = sum(BB),
+         lgHBP = sum(HBP),
+         lgSO = sum(SO),
+         lgIP = sum(IPouts/3),
+         FIP.constant = lgERA - (13*lgHR + 3*(lgBB+lgHBP) - 2*lgSO)/lgIP,
+         fip = round((13*HR + 3*(BB+HBP) - 2*SO)/IP + FIP.constant, 2))</code></pre>
+<p>Okay, so who should be our guinea pig? How about Justin Verlander? He’s been in the Majors for a long time and has put together some of the most impressive numbers, albeit with a short ____ in the middle of his career.</p>
+<p>To scrape Verlander’s stats, we need to lookup his Baseball Reference ID in our players dataframe and paste it into a URL before downloading the website. The <code>getOption(&quot;viewer&quot;)</code> line allows us to open this HTML file in our browser whenever we please.</p>
+<pre class="r"><code>first &lt;- &quot;Justin&quot;; last &lt;- &quot;Verlander&quot;
+
+ID &lt;- players %&gt;%
+  filter(nameFirst == first,
+         nameLast == last) %&gt;%
+  pull(bbrefID)
+
+bbref.url &lt;- paste0(&quot;https://www.baseball-reference.com/players/&quot;, 
+                    substr(ID, 1, 1), &quot;/&quot;,
+                    ID, &quot;.shtml&quot;)
+
+local.path &lt;- &quot;/Users/walkerharrison/Desktop/bbref.html&quot;
+
+download.file(bbref.url, destfile = local.path)
+viewer &lt;- getOption(&quot;viewer&quot;)
+#viewer(local.path)</code></pre>
+<p>Running this page through some of the core functions in the <code>rvest</code> scraping library allows us to pinpoint the table we’re targeting using the correct CSS selector (<code>#&quot;pitching_standard&quot;</code>) and put it into a dataframe. Just as with the Lahman table, we need to rename some columns to match the HTML attributes, and also filter out any Minor League or partial seasons (i.e. when Verlander pitched for both the Tigers and the Astros in 2017).</p>
+<pre class="r"><code>page &lt;- read_html(local.path)
+
+stats.bbref &lt;- page %&gt;%
+  html_nodes(&quot;#pitching_standard&quot;) %&gt;%
+  html_table() %&gt;% 
+  unlist(recursive = FALSE) %&gt;%
+  as.data.frame() %&gt;%
+  filter(Lg %in% c(&#39;AL&#39;, &#39;NL&#39;)) %&gt;%
+  rename(win_loss_perc = W.L.,
+         earned_run_avg = ERA,
+         batters_faced = BF,
+         fip = FIP,
+         whip = WHIP,
+         hits_per_nine = H9,
+         home_runs_per_nine = HR9,
+         bases_on_balls_per_nine = BB9,
+         strikeouts_per_nine = SO9,
+         strikeouts_per_base_on_balls = SO.W) %&gt;%
+  group_by(Year) %&gt;%
+  mutate(teams = n()) %&gt;%
+  filter(teams == 1 | Tm == &quot;TOT&quot;)
+
+stats.Lahman &lt;- pitching %&gt;%
+  filter(playerID == ID)</code></pre>
+<p>To make sure the stats are equivalent, we’ll test that each shared column in the two dataframes has (approximately) the same numbers:</p>
+<pre class="r"><code>common.cols &lt;- intersect(names(stats.bbref),
+                         names(stats.Lahman))
+
+for (col in common.cols){
+  equivalent &lt;- all.equal(pull(stats.bbref, col), pull(stats.Lahman, col), tolerance = 0.1)
+  if(!isTRUE(equivalent)){print(col)}
+}</code></pre>
+<p>Now we need to calculate percentiles for all these statistics. Since we only want to compare Verlander to his peers and not every September call-up that faced a dozen batters on the season, we set the innings requirement of 162 (standard for qualifying as a league leader), and then again take advantage of one of <code>dplyr</code>’s <code>_if</code> functions, converting only numeric columns to their percentile:</p>
+<pre class="r"><code>IP.req &lt;- 162
+
+stat.percs &lt;- pitching %&gt;%
+  filter(IP &gt; IP.req) %&gt;%
+  group_by(yearID) %&gt;%
+  mutate_if(is.numeric, ntile, n = 100) %&gt;%
+  filter(playerID == ID)</code></pre>
+<p>Here comes the janky web development hack. The only things I know about HTML and CSS are what’s required to scrape a webpage and whatever is intuitive when you control-click and “Inspect Element”. But I have figured out that if we hard code a bunch of colors in the <code>&lt;style&gt;</code> section of the HTML, we can get the desired result. In short, if we want Verlander’s 2008 strikeouts to render as red, we need to include the style <code>tr[id=&quot;pitching_standard.2008&quot;] td[data-stat=&quot;SO&quot;]{color: &quot;red&quot;;}</code>.</p>
+<p>Of course we need a hundred colors to match to percentiles, which the <code>colorRampPalette</code> from the <code>RColorBrewer</code> package will do for us. Then we can loop through the <code>years</code> and <code>cols</code> to create a comprehensive list of colorings for the entire table.</p>
+<pre class="r"><code>years &lt;- stat.percs %&gt;% pull(yearID)
+colors &lt;- colorRampPalette(c(&quot;blue&quot;, &quot;red&quot;))(100)
+styles &lt;- list()
+
+i &lt;- 1
+for (year in years){
+  for (col in common.cols){
+    
+    perc &lt;- stat.percs %&gt;% filter(yearID == year) %&gt;% pull(col)
+    
+    row.string &lt;- paste0(&#39;tr[id=&quot;pitching_standard.&#39;, year, &#39;&quot;] &#39;)
+    col.string &lt;- paste0(&#39;td[data-stat=&quot;&#39;, col, &#39;&quot;]&#39;)
+    color.string &lt;- paste0(&#39;{color: &#39;, colors[perc], &#39;;}&#39;)
+    
+    style &lt;- paste0(row.string, col.string, color.string)
+    styles[[i]] &lt;- style
+    
+    i &lt;- i+1
+  }
+}</code></pre>
+<p>Finally, we need to open the current HTML and insert all our styles, which can be done by looking for the appropriate closing tag with the <code>str_replace</code> function. We save our new webpage and view it:</p>
+<pre class="r"><code>current.page &lt;- paste(readLines(local.path), collapse=&quot;\n&quot;)
+
+CSS &lt;- paste(styles, collapse = &quot;\n&quot;)
+
+new.page &lt;- str_replace(current.page, &quot;&lt;/style&gt;&quot;,
+                        paste(CSS, &quot;&lt;/style&gt;&quot;))
+
+new.path &lt;- &quot;/Users/walkerharrison/Desktop/bbref_new.html&quot;
+cat(new.page, file = new.path, sep=&quot;\n&quot;)
+
+#viewer(new.path)</code></pre>
+<div class="figure">
+<img src="../../public/img/verlander_color.png" />
+
+</div>
+<p>The colorized numbers provide a lot more information. Most obvious is how incredibly talented Verlander is: his ERA is often deep blue, his strikeouts always bright red, and so on. But there’s also more subtle narratives to mine. Perhaps Verlander’s mid-career swoon was overstated, since even though his ERA rode the color wave from 2.64 to 4.54, his FIP, which is considered a better, more stable statistic since it ignores the highly random results of balls in play, sees much more modest variation.</p>
+<p>Moreover, baseball’s transformation over the length of Verlander’s career is evident. These days, starters pitch fewer innings but strikeout batters more frequently. Accordingly, Verlander’s 2007 innings total of 201.2 is darker than his 2017 total of 206.0, even though the numbers are close in absolute terms; meanwhile his 8.2 strikeouts per nine innings is actually brighter than his 2017 rate of 9.6.</p>
+<p>Adding colors or percentiles to every statistic on Baseball Reference or Fangraphs is unrealistic, since one is inacessible to anyone or anything that is color-blind and the other would require us to literally double the number of statistics we keep. Still though, it’s informative to code up a script that’s capable of the challenge, and you might just learn (a little) web design along the way.</p>
+
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    
+</div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+<script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
+
+
+
+
+
+    
+
+
+
+    </body>
+</html>

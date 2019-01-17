@@ -1,7 +1,7 @@
 ---
 title: "wOBA and wRC+"
 tags: ["sabermetrics"]
-weight: 1
+weight: 0
 ---
 
 
