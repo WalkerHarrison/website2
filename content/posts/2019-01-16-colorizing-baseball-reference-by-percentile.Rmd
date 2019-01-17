@@ -6,10 +6,6 @@ slug: colorizing-baseball-reference-by-percentile
 categories: []
 tags: ["sabermetrics"]
 weight: 1
-lastmod: '2019-01-16T21:58:22-05:00'
-layout: post
-type: post
-highlight: no
 ---
 
 ```{r setup, include=FALSE}
@@ -29,13 +25,13 @@ library(tidyverse)
 library(RColorBrewer)
 library(rvest)
 
-base.url <- "https://raw.githubusercontent.com/chadwickbureau/baseballdatabank/master/core/"
+base_url <- "https://raw.githubusercontent.com/chadwickbureau/baseballdatabank/master/core/"
 
-pitching.url <- paste0(base.url, "Pitching.csv")
-players.url <- paste0(base.url, "People.csv")
+pitching_url <- paste0(base_url, "Pitching.csv")
+players_url <- paste0(base_url, "People.csv")
 
-pitching <- read_csv(pitching.url)
-players <- read_csv(players.url)
+pitching <- read_csv(pitching_url)
+players <- read_csv(players_url)
 ```
 
 Ultimately we need to compare this data to whatever we scrape from Baseball Reference, so it's important the both the numbers and the column names are consistent. First we must create aggregate seasons for any pitcher who played for multiple teams in a single season, which is achieved by grouping across players and seasons and then using the `summarize_if` function on any numeric columns. After that, we can create all of our rate statistics, taking care to name them not after the BR page but actually in accordance with the underlying HTML attribute of the webpage's table entries (i.e. `earned_run_avg` not `ERA`). This will come in handy later.
@@ -187,7 +183,7 @@ cat(new.page, file = new.path, sep="\n")
 #viewer(new.path)
 ```
 
-![](../../public/img/verlander_color.png)
+![](../../img/verlander_color.png)
 
 The colorized numbers provide a lot more information. Most obvious is how incredibly talented Verlander is: his ERA is often deep blue, his strikeouts always bright red, and so on. But there's also more subtle narratives to mine. Perhaps Verlander's mid-career swoon was overstated, since even though his ERA rode the color wave from 2.64 to 4.54, his FIP, which is considered a better, more stable statistic since it ignores the highly random results of balls in play, sees much more modest variation.
 

@@ -11,8 +11,7 @@ knitr::opts_knit$set(root.dir = "/Users/walkerharrison/Desktop/Website/data/chad
 knitr::opts_chunk$set(warning=FALSE,
                       message=FALSE,
                       cache = TRUE,
-                      eval = FALSE,
-                      include = FALSE)
+                      eval = FALSE)
 
 ```
 

@@ -34,7 +34,8 @@ theme = "hyde-hyde"
 
     # https://highlightjs.org
     highlightjs = true
-    highlightjsstyle = "github"
+    highlightjsLang = ["r"]
+    #highlightjsTheme = "github"
     
     # please choose either GraphComment or Disqus or Utterances
     #GraphCommentId = "..."

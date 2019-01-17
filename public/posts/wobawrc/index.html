@@ -24,12 +24,12 @@
 <meta name="twitter:title" content="wOBA and wRC&#43;"/>
 <meta name="twitter:description" content="RETROSHEET PRIMER
 The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the get_plays function will check if the right .csv file already exists, and use the aforementioned parse.retrosheet2.pbp function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.
-It’s useful to show a graphical representation of the information flow required make these statstics, since the multiple ingre"/>
+library(tidyverse) library(gridExtra) library(knitr) source(&quot;parse.retrosheet.pbp.R&quot;) get_plays &lt;- function(season){ season.path &lt;- paste0(&#39;download.folder/unzipped/all&#39;, season, &#39;.csv&#39;) if (!"/>
 
 <meta property="og:title" content="wOBA and wRC&#43;" />
 <meta property="og:description" content="RETROSHEET PRIMER
 The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the get_plays function will check if the right .csv file already exists, and use the aforementioned parse.retrosheet2.pbp function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.
-It’s useful to show a graphical representation of the information flow required make these statstics, since the multiple ingre" />
+library(tidyverse) library(gridExtra) library(knitr) source(&quot;parse.retrosheet.pbp.R&quot;) get_plays &lt;- function(season){ season.path &lt;- paste0(&#39;download.folder/unzipped/all&#39;, season, &#39;.csv&#39;) if (!" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/wobawrc/" /><meta property="og:site_name" content="Title" />
 
@@ -37,7 +37,7 @@ It’s useful to show a graphical representation of the information flow require
     
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 
 
 
@@ -196,7 +196,7 @@ It’s useful to show a graphical representation of the information flow require
     
     
     <br/>
-    <i class="fas fa-clock"></i> 5 min read
+    <i class="fas fa-clock"></i> 9 min read
 </div>
 
 
@@ -209,6 +209,24 @@ It’s useful to show a graphical representation of the information flow require
 
 <p>RETROSHEET PRIMER</p>
 <p>The first step, naturally, is to read in some data. If you’ve used retrosheet event files before, the <code>get_plays</code> function will check if the right .csv file already exists, and use the aforementioned <code>parse.retrosheet2.pbp</code> function if it doesn’t. Once the column names are attached, we have our raw play-by-play data for a single season.</p>
+<pre class="r"><code>library(tidyverse)
+library(gridExtra)
+library(knitr)
+source(&quot;parse.retrosheet.pbp.R&quot;)
+
+get_plays &lt;- function(season){
+
+  season.path &lt;- paste0(&#39;download.folder/unzipped/all&#39;, season, &#39;.csv&#39;)
+  if (!file.exists(season.path)) {parse.retrosheet2.pbp(season)}
+  
+  plays &lt;- read_csv(season.path)
+  fields &lt;- read_csv(&#39;download.folder/unzipped/fields.csv&#39;)
+  names(plays) &lt;- fields %&gt;% pull(Header)
+  
+  return(plays)
+}
+
+plays2017.raw &lt;- get_plays(2017)</code></pre>
 <p>It’s useful to show a graphical representation of the information flow required make these statstics, since the multiple ingre</p>
 <p>As is, our dataframe contains dozens of columns we don’t want and is missing a few that we do. First off, the analysis is much more intuitive if we have the text description of a play instead of the <code>EVENT_CD</code> encoding (i.e. <code>&quot;Home run&quot;</code> instead of <code>23</code>). More importantly though we need to know two things for each play:</p>
 <ul>
@@ -218,13 +236,210 @@ It’s useful to show a graphical representation of the information flow require
 <p>To create the first column, we tally up the number of runners who advanced past third base (no this isn’t equivalent to checking whether the “destination” is <code>== 4</code> since retrosheet uses <code>5</code> and <code>6</code> in these variables to denote unearned runs).</p>
 <p>To create the second column, we note whether each base is empty (<code>is.na</code>), and then <code>paste</code> these results together into a single <code>base</code> variable, which itself is combined with <code>out</code> to provide full situational information.</p>
 <p>We also need the base-out situation once the play is over, which we get from taking the base-out situation of the subsequent play with the <code>lead</code> function. Grouping by the game, inning number, and inning side ensures that the last play of the frame doesn’t inherit empty bases, but rather the default that we define (<code>&quot;END&quot;</code>).</p>
+<pre class="r"><code>add_columns &lt;- function(plays.raw, 
+                        AL = c(&#39;BAL&#39;, &#39;BOS&#39;, &#39;CHA&#39;, &#39;CLE&#39;, &#39;DET&#39;,
+                               &#39;HOU&#39;, &#39;KCA&#39;, &#39;ANA&#39;, &#39;MIN&#39;, &#39;NYA&#39;,
+                               &#39;OAK&#39;, &#39;SEA&#39;, &#39;TBA&#39;, &#39;TEX&#39;, &#39;TOR&#39;)){
+  
+  event_key &lt;- read_csv(&#39;download.folder/unzipped/event_key.csv&#39;)
+  
+  # rewrite janky character
+  event_key$RESULT[event_key$EVENT_CD == 19] &lt;- &quot;Fielder&#39;s Choice&quot;
+  plays.raw &lt;- plays.raw %&gt;% inner_join(event_key, by = &quot;EVENT_CD&quot;) %&gt;%
+    mutate(RESULT = as.factor(RESULT))
+  
+  plays &lt;- plays.raw %&gt;% rowwise() %&gt;%
+    
+    # how many people scored on the play?
+    mutate(runs.play = sum(BAT_DEST_ID &gt; 3,
+                           RUN1_DEST_ID &gt; 3,
+                           RUN2_DEST_ID &gt; 3,
+                           RUN3_DEST_ID &gt; 3,
+                           na.rm = TRUE)) %&gt;%
+    
+    # derive old base-out situation
+    mutate(on.first = ifelse(is.na(BASE1_RUN_ID), &#39;_&#39;, &#39;1B&#39;),
+           on.second = ifelse(is.na(BASE2_RUN_ID), &#39;_&#39;, &#39;2B&#39;),
+           on.third = ifelse(is.na(BASE3_RUN_ID), &#39;_&#39;, &#39;3B&#39;)) %&gt;%
+    mutate(base = paste(on.first, on.second, on.third),
+           out = OUTS_CT) %&gt;%
+    mutate(base_out = paste(base, out, sep = &quot;  &quot;)) %&gt;%
+    
+    # derive new base-out situation
+    group_by(GAME_ID, INN_CT, BAT_HOME_ID) %&gt;%
+    mutate(base_out_end = lead(base_out, default = &quot;END&quot;),
+           HOME_TEAM_ID = substr(GAME_ID, 1, 3),
+           league = ifelse(HOME_TEAM_ID %in% AL, &quot;AL&quot;, &quot;NL&quot;),
+           BATTER_TEAM_ID = ifelse(BAT_HOME_ID == 1, 
+                                   HOME_TEAM_ID, AWAY_TEAM_ID)) %&gt;%
+    select(GAME_ID, HOME_TEAM_ID, AWAY_TEAM_ID, league, BATTER_TEAM_ID,
+           INN_CT, BAT_HOME_ID, OUTS_CT, AWAY_SCORE_CT, 
+           HOME_SCORE_CT, BAT_ID, PIT_ID, 
+           EVENT_CD, AB_FL, H_FL, SH_FL, SF_FL, RESULT, 
+           runs.play, base_out, base_out_end)
+  
+  return(plays)
+}
+
+plays2017 &lt;- add_columns(plays2017.raw)</code></pre>
 <p>Adding the columns allows us to construct a <strong>run expectancy matrix</strong>, an important concept in sabermetrics. A run expectancy matrix gives us the average remaining runs to be scored in an inning based on the base-out situation. The highest value of about 2.2 runs occurs, as you’d expect, with bases loaded and nobody out, while the lowest value, about a tenth of a run, occurs with two outs and nobody on.</p>
 <p>Run expectancy matrices are important for a variety of reasons. First of all they allow every play to be interpreted in the view of increased or decreased runs, which is the foundation of sabermetrics in the first place. As a result, you’re forced to understand baseball as a procession of state transitions authored by the pitcher and batter, where the best players are those who can harvest more runs out of the states they inherit. Plus, they’re also just a good reference for fans, since you can actually attach a number to your feelings about an inning as it unfolds: yes that leadoff double was good, but how good? Approximately two-thirds of a run.</p>
 <p>Making such a matrix is mostly just an act of accounting. To calculate how many runs are left in an inning, you need to know the current score and the score once the side is retired. To calculate the final score of an inning, we build a helper dataframe, <code>inning.runs</code> that keeps <code>runs.cum</code>, a cumulative sum of runs scored by each team within a game, and therefore acts as the scoreboard at the end of each half inning.</p>
 <p>We then <code>inner_join</code> this dataframe to the original plays by the half inning, and calculate the <code>runs.left</code> as the difference between <code>runs.current</code> (readily available via the existing score columns) and <code>runs.cum</code>.</p>
+<pre class="r"><code>make_RE_matrix &lt;- function(plays){
+  
+  # running scoreboard by inning
+  inning.runs &lt;- plays %&gt;%
+    group_by(GAME_ID, INN_CT, BAT_HOME_ID) %&gt;%
+    summarize(runs.inning = sum(runs.play)) %&gt;% 
+    arrange(GAME_ID, BAT_HOME_ID, INN_CT) %&gt;%
+    group_by(GAME_ID, BAT_HOME_ID) %&gt;%
+    mutate(runs.cum = cumsum(runs.inning))
+  
+  # average remaining runs over season
+  RE.matrix &lt;- plays  %&gt;%
+    inner_join(inning.runs, by = c(&#39;GAME_ID&#39;, &#39;INN_CT&#39;, &#39;BAT_HOME_ID&#39;)) %&gt;%
+    mutate(runs.current = ifelse(BAT_HOME_ID == 1, 
+                                 HOME_SCORE_CT, AWAY_SCORE_CT)) %&gt;%
+    mutate(runs.left = runs.cum - runs.current) %&gt;%
+    group_by(base_out) %&gt;% summarize(runs.expected = mean(runs.left)) %&gt;%
+    rbind(data.frame(base_out = &quot;END&quot;, runs.expected = 0))
+  
+  return(RE.matrix)
+}
+
+RE.matrix2017 &lt;- make_RE_matrix(plays2017)
+RE.matrix2017 %&gt;%
+  filter(base_out != &quot;END&quot;) %&gt;%
+  separate(base_out, c(&quot;base&quot;, &quot;out&quot;), sep = &quot;  &quot;) %&gt;%
+  spread(out, runs.expected) %&gt;%
+  arrange(`0`) %&gt;%
+  kable(digits = 2)</code></pre>
 <p>Now that we know the value of each base-out situation, we can calculate how many runs every play is worth by adding the situational change in run values to however many runs actually scored on the play. So if a batter comes up with one out and men on first and second and proceeds to hit a double that drives in the lead runner and advances the other to third base, he’ll be credited with the run driven in (+1) as well as the situational run-value change (+0.54).</p>
 <p>If you average all of these run-value changes over every instance of the event, you can attach a <code>run.value</code> to everything from a strikeout to a triple. In order to keep with tradition and lower bound wOBA at 0, we shift all the values up based on the run-value of an out, so that we’re now focused on <code>run.value.over.out</code> for each type of positive offensive play. These are the underlying calibrations that make up wOBA and that we substitute for, say, merely adding up total bases to create slugging percentage.</p>
 <p>However, it’s hard for a new-fangled metric to catch on if fans not only have to follow its complex logic but also familiarize themselves with a new scale–what constitutes a “good” wOBA? So wOBA is actually rescaled according to average on-base percentage: we calculate <code>OBP.league</code> and the average <code>wOBA.raw</code>, and inflate the existing wOBA weights until the two are equal:</p>
+<pre class="r"><code>get_run_values &lt;- function(plays, RE.matrix){
+  
+  run.values &lt;- plays %&gt;%
+    # calculate situation change in run values
+    inner_join(RE.matrix, by = &quot;base_out&quot;) %&gt;%
+    inner_join(RE.matrix, by = c(&quot;base_out_end&quot; = &quot;base_out&quot;)) %&gt;%
+    rename(runs.expected = runs.expected.x,
+           runs.expected.end = runs.expected.y) %&gt;%
+    # add the change to any runs scored
+    group_by(RESULT) %&gt;%
+    summarize(n = n(),
+              run.value = mean(runs.play + runs.expected.end - runs.expected))
+
+  
+  out.value &lt;- run.values %&gt;%
+    filter(RESULT %in% c(&quot;Generic out&quot;, &quot;Strikeout&quot;, &quot;Fielder&#39;s Choice&quot;)) %&gt;%
+    summarize(run.value = weighted.mean(run.value, w = n)) %&gt;%
+    pull(run.value)
+
+  # shift run values up based on out value
+  run.values &lt;- run.values %&gt;%
+    mutate(run.value.over.out = run.value - out.value)
+
+  PA.league &lt;- sum(plays$AB_FL) + sum(plays$SH_FL) + sum(plays$SF_FL) +
+               sum(plays$RESULT %in% 
+                     c(&quot;Walk&quot;, &quot;Intentional walk&quot;, 
+                       &quot;Hit by pitch&quot;, &quot;Interference&quot;))
+  
+  # calculate average OBP across league
+
+  OBP.league &lt;- (sum(plays$H_FL &gt; 0) + 
+                 sum(plays$RESULT %in% c(&quot;Walk&quot;, &quot;Hit by pitch&quot;))) /
+               (sum(plays$AB_FL) + sum(plays$SF_FL) + 
+                sum(plays$RESULT %in% c(&quot;Walk&quot;, &quot;Hit by pitch&quot;)))
+
+  wOBA.raw &lt;- run.values %&gt;%
+    filter(RESULT %in% 
+             c(&quot;Home run&quot;, &quot;Triple&quot;, &quot;Double&quot;, &quot;Single&quot;, 
+               &quot;Hit by pitch&quot;, &quot;Walk&quot;, &quot;Intentional walk&quot;)) %&gt;%
+    summarize(run.value.over.out = sum(run.value.over.out*n)) %&gt;%
+    pull(run.value.over.out)/PA.league
+
+  # scale weights up so that wOBA = OBP
+  wOBA.scale &lt;- OBP.league/wOBA.raw
+
+  run.values &lt;- run.values %&gt;%
+    mutate(OBP.league = OBP.league,
+           wOBA.scale = wOBA.scale,
+           weight = run.value.over.out*wOBA.scale)
+
+  return(run.values)
+}
+
+run.values.2017 &lt;- get_run_values(plays2017, RE.matrix2017)</code></pre>
+<pre class="r"><code>wOBAs2017 &lt;- plays2017 %&gt;%
+  group_by(BAT_ID, league, BATTER_TEAM_ID) %&gt;%
+  summarize(NIBB = sum(RESULT == &quot;Walk&quot;),
+            IBB  = sum(RESULT == &quot;Intentional walk&quot;),
+            HBP = sum(RESULT == &quot;Hit by pitch&quot;),
+            B1 = sum(RESULT == &quot;Single&quot;),
+            B2 = sum(RESULT == &quot;Double&quot;),
+            B3 = sum(RESULT == &quot;Triple&quot;),
+            HR = sum(RESULT == &quot;Home run&quot;),
+            SF = sum(SF_FL),
+            AB = sum(AB_FL),
+            PA = sum(AB_FL) + sum(SH_FL) + sum(SF_FL) +
+                  sum(RESULT %in% c(&quot;Walk&quot;, &quot;Intentional walk&quot;, 
+                                    &quot;Hit by pitch&quot;, &quot;Interference&quot;)),
+            R = sum(runs.play)) %&gt;%
+  mutate(wB1 = run.values.2017 %&gt;% filter(RESULT == &quot;Single&quot;) %&gt;% pull(weight),
+         wB2 = run.values.2017 %&gt;% filter(RESULT == &quot;Double&quot;) %&gt;% pull(weight),
+         wB3 = run.values.2017 %&gt;% filter(RESULT == &quot;Triple&quot;) %&gt;% pull(weight),
+         wHR = run.values.2017 %&gt;% filter(RESULT == &quot;Home run&quot;) %&gt;% pull(weight),
+         wBB = run.values.2017 %&gt;% filter(RESULT == &quot;Walk&quot;) %&gt;% pull(weight),
+         wHBP = run.values.2017 %&gt;% filter(RESULT == &quot;Hit by pitch&quot;) %&gt;% pull(weight)) %&gt;%
+  
+  mutate(wOBA = 
+          (wBB*(NIBB) + wHBP*HBP + wB1*B1 + wB2*B2 + wB3*B3 + wHR*HR)/
+          (AB + NIBB + SF + HBP))</code></pre>
+<pre class="r"><code>pitchers &lt;- plays2017 %&gt;%
+  filter(INN_CT &lt; 8) %&gt;%
+  pull(PIT_ID) %&gt;% unique()
+
+league.stats &lt;- wOBAs2017 %&gt;%
+  filter(!BAT_ID %in% pitchers) %&gt;%
+  group_by(league) %&gt;%
+  summarize(wOBA.league = weighted.mean(wOBA, w = PA, na.rm = TRUE),
+            PA.league = sum(PA),
+            R.league = sum(R),
+            OBP.league = mean(run.values.2017$OBP.league),
+            wOBA.scale = mean(run.values.2017$wOBA.scale)) %&gt;%
+  mutate(wRC.league = ((wOBA.league - OBP.league)/wOBA.scale + R.league/PA.league)*PA.league)</code></pre>
+<pre class="r"><code>make_park_factors &lt;- function(plays, regress = 0.1){
+  park.factors = plays %&gt;%
+    group_by(GAME_ID, HOME_TEAM_ID, AWAY_TEAM_ID) %&gt;%
+    summarize(runs = sum(runs.play)) %&gt;%
+    ungroup() %&gt;%
+    select(-GAME_ID) %&gt;%
+    rename(home = HOME_TEAM_ID, away = AWAY_TEAM_ID) %&gt;%
+    gather(location, team, -runs) %&gt;%
+    group_by(team, location) %&gt;%
+    summarize(RPG = mean(runs)) %&gt;%
+    spread(location, RPG) %&gt;%
+    mutate(PF = (home/away)/2 + 0.5) %&gt;%
+    mutate(PF = round((1 - regress)*PF + regress, 2)) %&gt;%
+    select(team, PF)
+
+  return(park.factors)
+}
+
+park.factors.17.1yr &lt;- make_park_factors(plays2017)
+
+plays2016 &lt;- add_columns(get_plays(2016))
+plays2015 &lt;- add_columns(get_plays(2015))
+park.factors.17.3yr &lt;- rbind(plays2015, plays2016, plays2017) %&gt;%
+  make_park_factors(regress = 0.05)
+
+wRCs2017 &lt;- wOBAs2017 %&gt;%
+  inner_join(park.factors.17.3yr, by = c(&#39;BATTER_TEAM_ID&#39; = &#39;team&#39;)) %&gt;%
+  inner_join(league.stats, by = &quot;league&quot;) %&gt;%
+  mutate(wRC.plus = 100 * ( ( (wOBA - OBP.league)/wOBA.scale + R.league/PA.league) + (R.league/PA.league - PF*R.league/PA.league) )  /
+                    (wRC.league/PA.league))</code></pre>
 <p>get_wRC_plus &lt;- function(player, plays, run.values, league.wOBAs, park.factors, AL = c(‘BAL’, ‘BOS’, ‘CHA’, ‘CLE’, ‘DET’, ‘HOU’, ‘KCA’, ‘ANA’, ‘MIN’, ‘NYA’, ‘OAK’, ‘SEA’, ‘TBA’, ‘TOR’)){</p>
 <p>plays.player &lt;- plays %&gt;% ungroup() %&gt;% filter(BAT_ID == player)</p>
 <p>tm &lt;- plays.player %&gt;% filter(BAT_HOME_ID == 1) %&gt;% slice(1) %&gt;% pull(HOME_TEAM_ID)</p>
@@ -235,6 +450,27 @@ It’s useful to show a graphical representation of the information flow require
 <p>wRC.league &lt;- ((wOBA.league - OBP)/wOBA.scale + RpPA)*PA.league</p>
 <p>wRC.plus &lt;- 100 * ( ( (wOBA - OBP)/wOBA.scale + RpPA) + (RpPA - PF*RpPA) ) / (wRC.league/PA.league)</p>
 <p>return(round(unname(wRC.plus))) }</p>
+<pre class="r"><code>players.2017 &lt;- read_csv(&#39;/Users/walkerharrison/Downloads/master.csv&#39;) %&gt;%
+  mutate(playerid = as.integer(fg_id))
+
+fg &lt;- read_csv(&#39;/Users/walkerharrison/Downloads/FanGraphsLeaderboard.csv&#39;)
+
+leaders &lt;- fg %&gt;% inner_join(players.2017, by = &#39;playerid&#39;) %&gt;%
+  select(playerid, retro_id, Name, wOBA, `wRC+`)
+
+leaders %&gt;% inner_join(wRCs2017, by = c(&#39;retro_id&#39; = &#39;BAT_ID&#39;)) %&gt;% View()
+
+leaders &lt;- leaders %&gt;% rowwise() %&gt;%
+  mutate(wOBA.us = get_wOBA(retro_id, plays2017, run.values.2017)[&#39;wOBA&#39;],
+        wRC.plus = get_wRC_plus(retro_id, plays2017, run.values.2017, league.wOBAs.2017, park.factors.17.3yr))
+
+g1 &lt;- leaders %&gt;% ggplot(aes(wOBA, wOBA.us)) + geom_point(size = 2, alpha = 0.3) +
+  geom_abline(slope = 1, intercept = 0) + theme_bw()
+
+g2 &lt;- leaders %&gt;% ggplot(aes(`wRC+`, wRC.plus)) + geom_point(size = 2, alpha = 0.3) +
+  geom_abline(slope = 1, intercept = 0) + theme_bw()
+
+grid.arrange(g1, g2, nrow = 1)</code></pre>
 
   </div>
   
