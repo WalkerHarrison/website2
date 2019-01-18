@@ -18,7 +18,7 @@ weight: 1
 library(RColorBrewer)
 library(rvest)
 
-base_url &lt;- &quot;https://raw.githubusercontent.com/chadwickbureau/baseballdatabank/master/core/&quot;
+#base_url &lt;- &quot;https://raw.githubusercontent.com/chadwickbureau/baseballdatabank/master/core/&quot;
 
 pitching_url &lt;- paste0(base_url, &quot;Pitching.csv&quot;)
 players_url &lt;- paste0(base_url, &quot;People.csv&quot;)
@@ -27,7 +27,7 @@ pitching &lt;- read_csv(pitching_url)
 players &lt;- read_csv(players_url)</code></pre>
 <p>Ultimately we need to compare this data to whatever we scrape from Baseball Reference, so it’s important the both the numbers and the column names are consistent. First we must create aggregate seasons for any pitcher who played for multiple teams in a single season, which is achieved by grouping across players and seasons and then using the <code>summarize_if</code> function on any numeric columns. After that, we can create all of our rate statistics, taking care to name them not after the BR page but actually in accordance with the underlying HTML attribute of the webpage’s table entries (i.e. <code>earned_run_avg</code> not <code>ERA</code>). This will come in handy later.</p>
 <p>Note that in order to derive <a href="https://library.fangraphs.com/pitching/fip/">FIP</a>, we need to first calulate the FIP constant by summing up some league wide stats:</p>
-<pre class="r"><code>pitching &lt;- pitching %&gt;%
+<pre class="r"><code>pitching = pitching %&gt;%
   group_by(playerID, yearID) %&gt;%
   mutate(IBB = as.numeric(IBB)) %&gt;%
   rename(batters_faced = BFP) %&gt;%

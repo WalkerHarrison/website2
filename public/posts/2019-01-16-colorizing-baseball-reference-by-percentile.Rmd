@@ -9,7 +9,7 @@ weight: 1
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning=FALSE, message=FALSE, cache = TRUE)
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, cache = TRUE, eval = FALSE)
 ```
 
 One of the reasons the wider baseball community is sometimes slow to adopt different methodologies is that new metrics require memorizing new context. Anybody that's picked up a baseball card in the last century can tell you that a power hitter should slug 30 home runs, but what qualifies as an excellent strikeout-to-walk ratio?
@@ -25,7 +25,7 @@ library(tidyverse)
 library(RColorBrewer)
 library(rvest)
 
-base_url <- "https://raw.githubusercontent.com/chadwickbureau/baseballdatabank/master/core/"
+#base_url <- "https://raw.githubusercontent.com/chadwickbureau/baseballdatabank/master/core/"
 
 pitching_url <- paste0(base_url, "Pitching.csv")
 players_url <- paste0(base_url, "People.csv")
@@ -39,7 +39,7 @@ Ultimately we need to compare this data to whatever we scrape from Baseball Refe
 Note that in order to derive [FIP](https://library.fangraphs.com/pitching/fip/), we need to first calulate the FIP constant by summing up some league wide stats:
 
 ```{r}
-pitching <- pitching %>%
+pitching = pitching %>%
   group_by(playerID, yearID) %>%
   mutate(IBB = as.numeric(IBB)) %>%
   rename(batters_faced = BFP) %>%
