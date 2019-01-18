@@ -23,11 +23,11 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="colorizing Baseball Reference by percentile"/>
 <meta name="twitter:description" content="One of the reasons the wider baseball community is sometimes slow to adopt different methodologies is that new metrics require memorizing new context. Anybody that’s picked up a baseball card in the last century can tell you that a power hitter should slug 30 home runs, but what qualifies as an excellent strikeout-to-walk ratio?
-One solution is to normalize a new statistic onto an existing one so that it inherits the same ____: stats like wOBA and FIP are scaled onto OBP and ERA, respectively, so that people can have a better idea of what constitutes success."/>
+One solution is to normalize a new statistic onto an existing one so that it inherits a similar distribution: stats like wOBA and FIP are scaled onto OBP and ERA, respectively, so that people can have a better idea of what constitutes success."/>
 
 <meta property="og:title" content="colorizing Baseball Reference by percentile" />
 <meta property="og:description" content="One of the reasons the wider baseball community is sometimes slow to adopt different methodologies is that new metrics require memorizing new context. Anybody that’s picked up a baseball card in the last century can tell you that a power hitter should slug 30 home runs, but what qualifies as an excellent strikeout-to-walk ratio?
-One solution is to normalize a new statistic onto an existing one so that it inherits the same ____: stats like wOBA and FIP are scaled onto OBP and ERA, respectively, so that people can have a better idea of what constitutes success." />
+One solution is to normalize a new statistic onto an existing one so that it inherits a similar distribution: stats like wOBA and FIP are scaled onto OBP and ERA, respectively, so that people can have a better idea of what constitutes success." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/colorizing-baseball-reference-by-percentile/" /><meta property="article:published_time" content="2019-01-16T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2019-01-16T00:00:00&#43;00:00"/><meta property="og:site_name" content="Title" />
@@ -209,27 +209,30 @@ One solution is to normalize a new statistic onto an existing one so that it inh
 
 
 <p>One of the reasons the wider baseball community is sometimes slow to adopt different methodologies is that new metrics require memorizing new context. Anybody that’s picked up a baseball card in the last century can tell you that a power hitter should slug 30 home runs, but what qualifies as an excellent strikeout-to-walk ratio?</p>
-<p>One solution is to normalize a new statistic onto an existing one so that it inherits the same ____: stats like wOBA and FIP are scaled onto OBP and ERA, respectively, so that people can have a better idea of what constitutes success. Another is to center a statistic around 100 so that it reads as percentage above or below average, as is done with any stat with a trailing “+” or “-” (wRC+, ERA-, etc.)</p>
+<p>One solution is to normalize a new statistic onto an existing one so that it inherits a similar distribution: stats like wOBA and FIP are scaled onto OBP and ERA, respectively, so that people can have a better idea of what constitutes success. Another approach is to center a statistic around 100 so that it reads as a percentage above or below average, as is done with any stat with a trailing “+” or “-” (wRC+, ERA-, etc.)</p>
 <p>Still though, it would be nice to be able to understand players relative to their colleagues on a more widespread basis, which is why the goal of this post is to take the ever-popular Baseball Reference webpages and colorize their standard pitching tables according to the percentile of each statistic. Outlying figures should burst off the page while typical values wear more modest shades.</p>
 <p>First we need data. Since we only require season totals, the Lahman database will suffice, although we’ll need to read the datasets in from Chadwick GitHub repo since the R package <code>Lahman</code> only runs through the 2016 season:</p>
 <pre class="r"><code>library(tidyverse)
 library(RColorBrewer)
 library(rvest)
 
-#base_url &lt;- &quot;https://raw.githubusercontent.com/chadwickbureau/baseballdatabank/master/core/&quot;
+base_url &lt;- paste0(&quot;https://raw.githubusercontent.com/&quot;,
+                   &quot;chadwickbureau/baseballdatabank/master/core/&quot;)
 
-pitching_url &lt;- paste0(base_url, &quot;Pitching.csv&quot;)
-players_url &lt;- paste0(base_url, &quot;People.csv&quot;)
+pitching.url &lt;- paste0(base_url, &quot;Pitching.csv&quot;)
+players.url &lt;- paste0(base_url, &quot;People.csv&quot;)
 
-pitching &lt;- read_csv(pitching_url)
-players &lt;- read_csv(players_url)</code></pre>
-<p>Ultimately we need to compare this data to whatever we scrape from Baseball Reference, so it’s important the both the numbers and the column names are consistent. First we must create aggregate seasons for any pitcher who played for multiple teams in a single season, which is achieved by grouping across players and seasons and then using the <code>summarize_if</code> function on any numeric columns. After that, we can create all of our rate statistics, taking care to name them not after the BR page but actually in accordance with the underlying HTML attribute of the webpage’s table entries (i.e. <code>earned_run_avg</code> not <code>ERA</code>). This will come in handy later.</p>
+pitching &lt;- read_csv(pitching.url)
+players &lt;- read_csv(players.url)</code></pre>
+<p>Ultimately we need to compare this data to whatever we scrape from Baseball Reference, so it’s important that both the numbers and the column names are consistent. First we must create aggregate seasons for any pitcher who played for multiple teams in a single season, which is achieved by grouping across players and seasons and then using the <code>summarize_if</code> function on any numeric columns. After that, we can create all of our rate statistics, taking care to name them not after the BR page but rather in accordance with the underlying HTML attribute of the webpage’s table entries (i.e. <code>earned_run_avg</code> not <code>ERA</code>). This will come in handy later.</p>
 <p>Note that in order to derive <a href="https://library.fangraphs.com/pitching/fip/">FIP</a>, we need to first calulate the FIP constant by summing up some league wide stats:</p>
 <pre class="r"><code>pitching = pitching %&gt;%
-  group_by(playerID, yearID) %&gt;%
   mutate(IBB = as.numeric(IBB)) %&gt;%
   rename(batters_faced = BFP) %&gt;%
+  # combine multiple rows within a single season into yearly total
+  group_by(playerID, yearID) %&gt;%
   summarize_if(is.numeric, sum, na.rm = TRUE) %&gt;%
+  # create all our rate statistics
   mutate(win_loss_perc = W/(W+L),
          IP = as.numeric(paste(IPouts %/% 3, IPouts %% 3, sep = &quot;.&quot;)),
          earned_run_avg = ER/IPouts*27,
@@ -239,6 +242,7 @@ players &lt;- read_csv(players_url)</code></pre>
          bases_on_balls_per_nine = round(BB/IPouts*27, 1),
          strikeouts_per_nine = round(SO/IPouts*27, 1),
          strikeouts_per_base_on_balls = round(SO/BB, 1)) %&gt;%
+  # compute leaguewide yearly stats to derive FIP constant
   group_by(yearID) %&gt;%
   mutate(lgERA = sum(ER)/sum(IPouts/3)*9,
          lgHR = sum(HR),
@@ -248,8 +252,10 @@ players &lt;- read_csv(players_url)</code></pre>
          lgIP = sum(IPouts/3),
          FIP.constant = lgERA - (13*lgHR + 3*(lgBB+lgHBP) - 2*lgSO)/lgIP,
          fip = round((13*HR + 3*(BB+HBP) - 2*SO)/IP + FIP.constant, 2))</code></pre>
-<p>Okay, so who should be our guinea pig? How about Justin Verlander? He’s been in the Majors for a long time and has put together some of the most impressive numbers, albeit with a short ____ in the middle of his career.</p>
+<p>Okay, so who should be our guinea pig? How about Justin Verlander? He’s been in the Majors for a long time and has consistently put together some of the most impressive numbers, albeit with a short strech of mediocrity in the middle of his career.</p>
 <p>To scrape Verlander’s stats, we need to lookup his Baseball Reference ID in our players dataframe and paste it into a URL before downloading the website. The <code>getOption(&quot;viewer&quot;)</code> line allows us to open this HTML file in our browser whenever we please.</p>
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;/Users/walkerharrison/Desktop/Website/website2/content/posts&quot;</code></pre>
 <pre class="r"><code>first &lt;- &quot;Justin&quot;; last &lt;- &quot;Verlander&quot;
 
 ID &lt;- players %&gt;%
