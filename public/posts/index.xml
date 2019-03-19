@@ -6,20 +6,10 @@
     <description>Recent content in Posts on Walker Harrison</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 16 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
     
 	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>colorizing Baseball Reference by percentile</title>
-      <link>/posts/colorizing-baseball-reference-by-percentile/</link>
-      <pubDate>Wed, 16 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/posts/colorizing-baseball-reference-by-percentile/</guid>
-      <description>One of the reasons the wider baseball community is sometimes slow to adopt different methodologies is that new metrics require memorizing new context. Anybody that’s picked up a baseball card in the last century can tell you that a power hitter should slug 30 home runs, but what qualifies as an excellent strikeout-to-walk ratio?
-One solution is to normalize a new statistic onto an existing one so that it inherits a similar distribution: stats like wOBA and FIP are scaled onto OBP and ERA, respectively, so that people can have a better idea of what constitutes success.</description>
-    </item>
     
     <item>
       <title>mining the GroupMe text</title>
@@ -74,6 +64,16 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
 You can embed an R code chunk like this:
 summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+    </item>
+    
+    <item>
+      <title>colorizing Baseball Reference by percentile</title>
+      <link>/posts/colorizing-baseball-reference-by-percentile/</link>
+      <pubDate>Wed, 16 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/colorizing-baseball-reference-by-percentile/</guid>
+      <description>One of the reasons the wider baseball community is sometimes slow to adopt different methodologies is that new metrics require memorizing new context. Anybody that’s picked up a baseball card in the last century can tell you that a power hitter should slug 30 home runs, but what qualifies as an excellent strikeout-to-walk ratio?
+One solution is to normalize a new statistic onto an existing one so that it inherits a similar distribution: stats like wOBA and FIP are scaled onto OBP and ERA, respectively, so that people can have a better idea of what constitutes success.</description>
     </item>
     
     <item>

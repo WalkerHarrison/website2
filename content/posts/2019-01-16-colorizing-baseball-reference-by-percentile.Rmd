@@ -5,7 +5,7 @@ date: '2019-01-16'
 slug: colorizing-baseball-reference-by-percentile
 categories: []
 tags: ["sabermetrics"]
-weight: 1
+weight: 100
 ---
 
 ```{r setup, include=FALSE}
